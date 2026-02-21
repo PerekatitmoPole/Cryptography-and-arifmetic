@@ -1,0 +1,330 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.2cm}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\newcommand{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\gcdop}{gcd}
+
+\begin{document}
+\section*{\centering Лекция 1}
+\section{Теорема Эйлера и функция Эйлера}
+
+\textbf{Теорема Эйлера.} Если $a\in(\Z/n\Z)^{\ast}$ (то есть $\gcdop(a,n)=1$), то
+\[
+a^{\varphi(n)} \equiv 1 \pmod n.
+\]
+
+\textbf{Замечания.}
+\begin{itemize}
+  \item $\Z/n\Z$ — кольцо.
+  \item $(\Z/n\Z)^{\ast}$ — группа обратимых элементов.
+  \item $\varphi(n)$ — число элементов $x\in\{1,\dots,n-1\}$, взаимно простых с $n$.
+\end{itemize}
+
+\textbf{Замечание.} $\varphi(n)=|(\Z/n\Z)^{\ast}|$.
+
+\textbf{Критерий обратимости.} Для $m\in\Z/n\Z$:
+\[
+m\in(\Z/n\Z)^{\ast} \iff \gcdop(m,n)=1.
+\]
+Идея: $\gcdop(m,n)=1 \Rightarrow \exists x,y\in\Z: mx+ny=1 \Rightarrow mx\equiv 1\pmod n$.
+Обратно: $mc\equiv 1\pmod n \Rightarrow mc-1=kn \Rightarrow \gcdop(m,n)=1$.
+
+\textbf{Примеры.}
+\[
+\varphi(p)=p-1,\qquad
+\varphi(p^{s})=p^{s}-p^{s-1}.
+\]
+Если $\gcdop(m,k)=1$, то $\varphi(mk)=\varphi(m)\varphi(k)$.
+
+\textbf{Доказательство теоремы Эйлера (идея).}
+Пусть $x_1,\dots,x_{\varphi(n)}$ — все элементы $(\Z/n\Z)^{\ast}$.
+Тогда $ax_1,\dots,ax_{\varphi(n)}$ — просто перестановка $(\Z/n\Z)^{\ast}$, значит
+\[
+(ax_1)\cdots(ax_{\varphi(n)}) \equiv x_1\cdots x_{\varphi(n)} \pmod n
+\Rightarrow a^{\varphi(n)}\equiv 1\pmod n.
+\]
+
+\textbf{Следствие (теорема Ферма).} Если $p$ — простое и $a\in(\Z/p\Z)^{\ast}$, то
+\[
+a^{p-1}\equiv 1 \pmod p.
+\]
+
+\textbf{Порядок элемента.}
+Если $a\in(\Z/n\Z)^{\ast}$, то наименьшее $k\in\N$, для которого $a^k\equiv 1\pmod n$,
+называется порядком $a$; обозначение $k=\ord(a)$.
+
+\textbf{Примеры.}
+\[
+(\Z/2\Z)^{\ast}=\{1\},\quad
+(\Z/3\Z)^{\ast}=\{1,2\},\quad
+(\Z/4\Z)^{\ast}=\{1,3\},\quad
+(\Z/5\Z)^{\ast}=\{1,2,3,4\},\quad
+(\Z/6\Z)^{\ast}=\{1,5\}.
+\]
+\[
+(\Z/7\Z)^{\ast}\cong \Z_6,\qquad
+(\Z/8\Z)^{\ast}=\{1,3,5,7\}\cong \Z_2\times \Z_2.
+\]
+
+\section{Циклические группы, порядок, линейные сравнения}
+
+\textbf{Определение.} Группа $G$ называется циклической, если она порождается одним элементом:
+$G=\langle g\rangle$.
+
+\textbf{Лемма про порядок (кратко).}
+Пусть $a\in(\Z/n\Z)^{\ast}$ и $k=\ord(a)$, то есть $a^k\equiv 1\pmod n$.
+Тогда:
+\[
+a^m\equiv 1\pmod n \Rightarrow k\mid m,
+\qquad\text{в частности}\qquad
+\ord(a)\mid \varphi(n).
+\]
+
+\textbf{Упражнение.} Сравнение
+\[
+ax\equiv b \pmod m
+\]
+имеет решение $\Leftrightarrow \gcdop(a,m)\mid b$.
+Если это так, то существует ровно $\gcdop(a,m)$ решений по модулю $m$.
+
+\section{Теорема Вильсона и КТО}
+
+\textbf{Первый тест на простоту (Вильсон).}
+\[
+p\ \text{простое} \iff (p-1)!\equiv -1\pmod p.
+\]
+(Идея: в произведении остаются только решения $x^2\equiv 1\pmod p$, то есть $x\equiv\pm1$.)
+
+\textbf{Китайская теорема об остатках.}
+Пусть $m_1,\dots,m_r\in\N$ попарно взаимно просты.
+Для любых $a_1,\dots,a_r\in\Z$ система
+\[
+\begin{cases}
+x\equiv a_1 \pmod{m_1}\\
+\vdots\\
+x\equiv a_r \pmod{m_r}
+\end{cases}
+\]
+имеет решение, и оно единственно по модулю $m=\prod_{i=1}^r m_i$.
+
+\textbf{Конструкция.}
+Пусть $m=\prod m_i$, $m_i'=\dfrac{m}{m_i}$.
+Тогда $\gcdop(m_i',m_i)=1$, поэтому $\exists \alpha_i\in\Z/m_i\Z$:
+\[
+\alpha_i m_i' \equiv 1\pmod{m_i}.
+\]
+При этом автоматически $\alpha_i m_i'\equiv 0\pmod{m_j}$ при $j\neq i$.
+Решение:
+\[
+x_0=\sum_{i=1}^r a_i\,\alpha_i\,m_i'.
+\]
+Если $x_0$ и $\tilde x_0$ — два решения, то $m_i\mid(x_0-\tilde x_0)$ для всех $i$,
+а значит $m\mid(x_0-\tilde x_0)$ и решения совпадают по модулю $m$.
+
+\textbf{Культурная переформулировка.}
+Отображение
+\[
+\Phi:\Z/m\Z \to \Z/m_1\Z\times\cdots\times \Z/m_r\Z,\qquad
+\Phi(\bar a)=(\bar a\bmod m_1,\dots,\bar a\bmod m_r)
+\]
+— изоморфизм колец (гомоморфизм по сложению и умножению).
+
+\section{Следствие КТО для обратимых и формула для $\varphi(n)$}
+
+\textbf{Отсюда.}
+\[
+(\Z/m\Z)^{\ast}\cong (\Z/m_1\Z)^{\ast}\times\cdots\times(\Z/m_r\Z)^{\ast}.
+\]
+В частности, при $\gcdop(k,s)=1$:
+\[
+\varphi(ks)=\varphi(k)\varphi(s).
+\]
+
+\textbf{Как вычислять $\varphi(n)$.}
+Если $n=\prod_{i} p_i^{\alpha_i}$, то
+\[
+\varphi(n)=\prod_i \varphi(p_i^{\alpha_i})
+=\prod_i \left(p_i^{\alpha_i}-p_i^{\alpha_i-1}\right).
+\]
+
+\section{Чевалле--Уорнинг}
+
+Пусть $K=\F_q$ — конечное поле из $q=p^s$ элементов.
+Факт: $K^{\ast}$ — циклическая группа порядка $(q-1)$.
+
+\textbf{Лемма.} Для $u\in\N$ положим
+\[
+S(u)=\sum_{x\in K} x^u.
+\]
+Тогда
+\[
+S(u)=
+\begin{cases}
+-1, & (q-1)\mid u,\\
+0, & \text{иначе}.
+\end{cases}
+\]
+Замечания: $u=0\Rightarrow S(0)=q\equiv 0\pmod p$; если $(q-1)\nmid u$, то
+берут $z\in K^{\ast}$ с $z^u\neq 1$ и получают $(1-z^u)S(u)=0$.
+
+\textbf{Теорема Чевалле--Уорнинга.} Пусть $f_1,\dots,f_m\in K[x_1,\dots,x_n]$ и
+\[
+\sum_{i=1}^m \deg(f_i) < n.
+\]
+Рассмотрим множество решений
+\[
+V=\{x\in K^n \st f_1(x)=\cdots=f_m(x)=0\}.
+\]
+Тогда
+\[
+|V|\equiv 0\pmod p.
+\]
+(аффинное алгебраическое многообразие.)
+
+\textbf{Идея доказательства.}
+Рассматривают
+\[
+P(x)=\prod_{i=1}^m \bigl(1-f_i(x)^{\,q-1}\bigr).
+\]
+Если $x\in V$, то $P(x)=1$.
+Если $x\notin V$, то найдётся $i$ с $f_i(x)\neq 0$, тогда $f_i(x)^{q-1}=1$ и $P(x)=0$.
+Значит
+\[
+\sum_{x\in K^n} P(x)=|V|.
+\]
+Далее раскладывают $P$ в сумму мономов и применяют лемму про суммы степеней по каждой переменной,
+используя ограничение $\deg(P)<n(q-1)$ (из $\sum \deg f_i < n$).
+
+\section{Интермеццо: теорема Гильберта о базисе}
+
+Пусть $K$ — поле, $K[x_1,\dots,x_n]$.
+Тогда любой идеал $M\subset K[x_1,\dots,x_n]$ конечно порождён:
+\[
+\exists f_1,\dots,f_N\in K[x_1,\dots,x_n] \ \forall f\in M\ \exists h_1,\dots,h_N\in K[x_1,\dots,x_n]:
+\quad
+f=\sum_{i=1}^N h_i f_i.
+\]
+(кольцо многочленов над полем Нётерово.)
+
+\section{RSA}
+
+\textbf{Дано.}
+Берём «случайные» большие простые $p,q$ и $n=pq$.
+Выбираем $e$ так, что
+\[
+e<\varphi(n)=(p-1)(q-1),\qquad \gcdop(e,\varphi(n))=1.
+\]
+Находим $d$:
+\[
+de\equiv 1 \pmod{\varphi(n)}.
+\]
+
+\textbf{Шифрование и расшифрование.}
+\[
+m\in \Z/n\Z,\qquad E(m)=m^e\pmod n,\qquad D(c)=c^d\pmod n.
+\]
+
+\textbf{Ключи.}
+Открытый ключ $(e,n)$ знают все. Секретный ключ $(d,n)$ знает владелец.
+
+\textbf{Корректность.}
+Нужно: $E(D(m))\equiv m\pmod n$.
+Достаточно показать по модулю $p$ и по модулю $q$:
+\[
+E(D(m))\equiv m\pmod p,\qquad E(D(m))\equiv m\pmod q.
+\]
+Если $m\equiv 0\pmod p$, то очевидно.
+Если $m\not\equiv 0\pmod p$, то из $de\equiv 1\pmod{(p-1)(q-1)}$ следует
+$de=1+c(p-1)(q-1)$, и тогда
+\[
+m^{de}=m^{1+c(p-1)(q-1)} \equiv m\cdot (m^{p-1})^{c(q-1)}\equiv m \pmod p
+\]
+по малой теореме Ферма. Аналогично по модулю $q$.
+
+\section{Упражнение: $x^2\equiv -1\pmod p$ и пример обратного элемента}
+
+\textbf{Упражнение.}
+\[
+x^2\equiv -1\pmod p \iff p\equiv 1\pmod 4.
+\]
+Связка через МТФ/Вильсона:
+\[
+x^{p-1}\equiv 1\pmod p,\qquad
+x^{p-1}=(x^2)^{\frac{p-1}{2}}\equiv (-1)^{\frac{p-1}{2}},
+\]
+и анализ $(p-1)!\equiv -1\pmod p$ через попарные множители.
+
+\textbf{Пример: найти $5^{-1}\pmod{36}$.}
+Решаем $5x\equiv 1\pmod{36}$, то есть диофантово
+\[
+5x+36y=1.
+\]
+Из цепочки:
+\[
+36=5\cdot 7+1 \Rightarrow 1=36-5\cdot 7
+\Rightarrow x\equiv -7\equiv 29\pmod{36}.
+\]
+
+Альтернатива через Эйлера:
+\[
+a^{-1}\equiv a^{\varphi(n)-1}\pmod n,\qquad \varphi(36)=12,\qquad 5^{11}\equiv 29\pmod{36}.
+\]
+Также:
+\[
+(\Z/36\Z)^{\ast}=\{1,5,7,11,13,17,19,23,25,29,31,35\}.
+\]
+
+\section{Тесты на простоту, тест Люка, числа Кармайкла}
+
+\textbf{Тесты на простоту}
+\begin{enumerate}
+  \item $p$ простое $\Rightarrow (p-1)!\equiv -1\pmod p$.
+  \item $p$ простое $\Rightarrow$ все решения $x^2\equiv 1\pmod p$ это $x\equiv \pm 1$.
+  \item $p$ простое $\Rightarrow \forall a,\ 1\le a\le p-1:\ a^{p-1}\equiv 1\pmod p$ (МТФ).
+\end{enumerate}
+Верно и обратное:
+если $\forall a\in\{1,\dots,n-1\}$ выполнено $a^{n-1}\equiv 1\pmod n$, то $n$ — простое.
+
+\textbf{Теорема Люка.}
+Если найдётся $a\in(\Z/n\Z)^{\ast}$ такое, что
+\[
+a^{n-1}\equiv 1\pmod n
+\quad\text{и}\quad
+a^{\frac{n-1}{p}}\not\equiv 1\pmod n\ \ \forall\ p\ \text{простое, }p\mid(n-1),
+\]
+то $n$ — простое.
+
+\textbf{Идея доказательства.}
+Если $n$ не простое, то $\varphi(n)<n-1$.
+Для $a\in(\Z/n\Z)^{\ast}$ верно $a^{\varphi(n)}\equiv 1$.
+Пусть $d=\gcdop(n-1,\varphi(n))$, тогда $a^d\equiv 1$, и это приводит к противоречию
+с условием $a^{\frac{n-1}{p}}\not\equiv 1$.
+
+\textbf{Числа Кармайкла.}
+Определение: $m\in\N$ — число Кармайкла, если $m$ составное и
+\[
+a^m \equiv a \pmod m \quad \forall a\in\Z.
+\]
+Замечание: минимальное $m=561$; таких чисел бесконечно много (доказано в 1992).
+
+\textbf{Утверждение (критерий Корсельта).}
+$m$ — число Кармайкла $\iff$
+\begin{itemize}
+  \item $m$ свободно от квадратов;
+  \item для каждого простого делителя $p\mid m$ выполнено $(p-1)\mid(m-1)$.
+\end{itemize}
+
+\textbf{Мораль.}
+Числа Кармайкла показывают «слабость» теста Ферма.\\
+\textbf{Вывод:} тест Миллера--Рабина.
+
+\end{document}
