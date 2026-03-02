@@ -12,30 +12,31 @@
 
 \newcommand{\Z}{\mathbb{Z}}
 \DeclareMathOperator{\gcdop}{gcd}
+\DeclareMathOperator{\ord}{ord}
 
 \begin{document}
 \section*{\centering Лекция 1}
 \section{Теорема Эйлера и функция Эйлера}
 
-\textbf{Теорема Эйлера.} Если $a\in(\Z/n\Z)^{\ast}$ (то есть $\gcdop(a,n)=1$), то
+\textbf{Теорема Эйлера.} Если $a\in(\Z/n)^{\ast}$ (то есть $\gcdop(a,n)=1$), то
 \[
 a^{\varphi(n)} \equiv 1 \pmod n.
 \]
 
 \textbf{Замечания.}
 \begin{itemize}
-  \item $\Z/n\Z$ — кольцо.
-  \item $(\Z/n\Z)^{\ast}$ — группа обратимых элементов.
+  \item $\Z/n$ — кольцо.
+  \item $(\Z/n)^{\ast}$ — группа обратимых элементов.
   \item $\varphi(n)$ — число элементов $x\in\{1,\dots,n-1\}$, взаимно простых с $n$.
 \end{itemize}
 
-\textbf{Замечание.} $\varphi(n)=|(\Z/n\Z)^{\ast}|$.
+\textbf{Замечание.} $\varphi(n)=|(\Z/n)^{\ast}|$.
 
-\textbf{Критерий обратимости.} Для $m\in\Z/n\Z$:
+\textbf{Критерий обратимости.} Для $m\in/n$:
 \[
-m\in(\Z/n\Z)^{\ast} \iff \gcdop(m,n)=1.
+m\in(\Z/n)^{\ast} \iff \gcdop(m,n)=1.
 \]
-Идея: $\gcdop(m,n)=1 \Rightarrow \exists x,y\in\Z: mx+ny=1 \Rightarrow mx\equiv 1\pmod n$.
+Идея: $\gcdop(m,n)=1 \Rightarrow \exists x,y\in: mx+ny=1 \Rightarrow mx\equiv 1\pmod n$.
 Обратно: $mc\equiv 1\pmod n \Rightarrow mc-1=kn \Rightarrow \gcdop(m,n)=1$.
 
 \textbf{Примеры.}
@@ -46,8 +47,8 @@ m\in(\Z/n\Z)^{\ast} \iff \gcdop(m,n)=1.
 Если $\gcdop(m,k)=1$, то $\varphi(mk)=\varphi(m)\varphi(k)$.
 
 \textbf{Доказательство теоремы Эйлера (идея).}
-Пусть $x_1,\dots,x_{\varphi(n)}$ — все элементы $(\Z/n\Z)^{\ast}$.
-Тогда $ax_1,\dots,ax_{\varphi(n)}$ — просто перестановка $(\Z/n\Z)^{\ast}$, значит
+Пусть $x_1,\dots,x_{\varphi(n)}$ — все элементы $(\Z/n)^{\ast}$.
+Тогда $ax_1,\dots,ax_{\varphi(n)}$ — просто перестановка $(\Z/n)^{\ast}$, значит
 \[
 (ax_1)\cdots(ax_{\varphi(n)}) \equiv x_1\cdots x_{\varphi(n)} \pmod n
 \Rightarrow a^{\varphi(n)}\equiv 1\pmod n.
@@ -59,20 +60,20 @@ a^{p-1}\equiv 1 \pmod p.
 \]
 
 \textbf{Порядок элемента.}
-Если $a\in(\Z/n\Z)^{\ast}$, то наименьшее $k\in\N$, для которого $a^k\equiv 1\pmod n$,
-называется порядком $a$; обозначение $k=\ord(a)$.
+Если $a\in(\Z/n)^{\ast}$, то наименьшее $k\in \mathbb{N}$, для которого $a^k\equiv 1\pmod n$,
+называется порядком $a$; обозначение $k=\ord a$.
 
 \textbf{Примеры.}
 \[
-(\Z/2\Z)^{\ast}=\{1\},\quad
-(\Z/3\Z)^{\ast}=\{1,2\},\quad
-(\Z/4\Z)^{\ast}=\{1,3\},\quad
-(\Z/5\Z)^{\ast}=\{1,2,3,4\},\quad
-(\Z/6\Z)^{\ast}=\{1,5\}.
+(\Z/2)^{\ast}=\{1\},\quad
+(\Z/3)^{\ast}=\{1,2\},\quad
+(\Z/4)^{\ast}=\{1,3\},\quad
+(\Z/5)^{\ast}=\{1,2,3,4\},\quad
+(\Z/6)^{\ast}=\{1,5\}.
 \]
 \[
-(\Z/7\Z)^{\ast}\cong \Z_6,\qquad
-(\Z/8\Z)^{\ast}=\{1,3,5,7\}\cong \Z_2\times \Z_2.
+(\Z/7)^{\ast}\cong \Z_6,\qquad
+(\Z/8)^{\ast}=\{1,3,5,7\}\cong \Z_2\times \Z_2.
 \]
 
 \section{Циклические группы, порядок, линейные сравнения}
@@ -81,7 +82,7 @@ a^{p-1}\equiv 1 \pmod p.
 $G=\langle g\rangle$.
 
 \textbf{Лемма про порядок (кратко).}
-Пусть $a\in(\Z/n\Z)^{\ast}$ и $k=\ord(a)$, то есть $a^k\equiv 1\pmod n$.
+Пусть $a\in(\Z/n)^{\ast}$ и $k=\ord(a)$, то есть $a^k\equiv 1\pmod n$.
 Тогда:
 \[
 a^m\equiv 1\pmod n \Rightarrow k\mid m,
@@ -105,8 +106,8 @@ p\ \text{простое} \iff (p-1)!\equiv -1\pmod p.
 (Идея: в произведении остаются только решения $x^2\equiv 1\pmod p$, то есть $x\equiv\pm1$.)
 
 \textbf{Китайская теорема об остатках.}
-Пусть $m_1,\dots,m_r\in\N$ попарно взаимно просты.
-Для любых $a_1,\dots,a_r\in\Z$ система
+Пусть $m_1,\dots,m_r\in \mathbb{N}$ попарно взаимно просты.
+Для любых $a_1,\dots,a_r\in$ система
 \[
 \begin{cases}
 x\equiv a_1 \pmod{m_1}\\
@@ -118,7 +119,7 @@ x\equiv a_r \pmod{m_r}
 
 \textbf{Конструкция.}
 Пусть $m=\prod m_i$, $m_i'=\dfrac{m}{m_i}$.
-Тогда $\gcdop(m_i',m_i)=1$, поэтому $\exists \alpha_i\in\Z/m_i\Z$:
+Тогда $\gcdop(m_i',m_i)=1$, поэтому $\exists \alpha_i\in/m_i\Z$:
 \[
 \alpha_i m_i' \equiv 1\pmod{m_i}.
 \]
@@ -158,10 +159,10 @@ x_0=\sum_{i=1}^r a_i\,\alpha_i\,m_i'.
 
 \section{Чевалле--Уорнинг}
 
-Пусть $K=\F_q$ — конечное поле из $q=p^s$ элементов.
+Пусть $K=\mathbb{F}_q$ — конечное поле из $q=p^s$ элементов.
 Факт: $K^{\ast}$ — циклическая группа порядка $(q-1)$.
 
-\textbf{Лемма.} Для $u\in\N$ положим
+\textbf{Лемма.} Для $u\in \mathbb{N}$ положим
 \[
 S(u)=\sum_{x\in K} x^u.
 \]
@@ -182,7 +183,7 @@ S(u)=
 \]
 Рассмотрим множество решений
 \[
-V=\{x\in K^n \st f_1(x)=\cdots=f_m(x)=0\}.
+V=\{x\in K^n \mid f_1(x)=\cdots=f_m(x)=0\}.
 \]
 Тогда
 \[
@@ -230,7 +231,7 @@ de\equiv 1 \pmod{\varphi(n)}.
 
 \textbf{Шифрование и расшифрование.}
 \[
-m\in \Z/n\Z,\qquad E(m)=m^e\pmod n,\qquad D(c)=c^d\pmod n.
+m\in \Z/n,\qquad E(m)=m^e\pmod n,\qquad D(c)=c^d\pmod n.
 \]
 
 \textbf{Ключи.}
@@ -295,7 +296,7 @@ a^{-1}\equiv a^{\varphi(n)-1}\pmod n,\qquad \varphi(36)=12,\qquad 5^{11}\equiv 2
 если $\forall a\in\{1,\dots,n-1\}$ выполнено $a^{n-1}\equiv 1\pmod n$, то $n$ — простое.
 
 \textbf{Теорема Люка.}
-Если найдётся $a\in(\Z/n\Z)^{\ast}$ такое, что
+Если найдётся $a\in(\Z/n)^{\ast}$ такое, что
 \[
 a^{n-1}\equiv 1\pmod n
 \quad\text{и}\quad
@@ -305,14 +306,14 @@ a^{\frac{n-1}{p}}\not\equiv 1\pmod n\ \ \forall\ p\ \text{простое, }p\mid
 
 \textbf{Идея доказательства.}
 Если $n$ не простое, то $\varphi(n)<n-1$.
-Для $a\in(\Z/n\Z)^{\ast}$ верно $a^{\varphi(n)}\equiv 1$.
+Для $a\in(\Z/n)^{\ast}$ верно $a^{\varphi(n)}\equiv 1$.
 Пусть $d=\gcdop(n-1,\varphi(n))$, тогда $a^d\equiv 1$, и это приводит к противоречию
 с условием $a^{\frac{n-1}{p}}\not\equiv 1$.
 
 \textbf{Числа Кармайкла.}
-Определение: $m\in\N$ — число Кармайкла, если $m$ составное и
+Определение: $m\in \mathbb{N}$ — число Кармайкла, если $m$ составное и
 \[
-a^m \equiv a \pmod m \quad \forall a\in\Z.
+a^m \equiv a \pmod m \quad \forall a\in.
 \]
 Замечание: минимальное $m=561$; таких чисел бесконечно много (доказано в 1992).
 

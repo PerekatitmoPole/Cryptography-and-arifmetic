@@ -1,2 +1,5 @@
 /auxil
-*.qz
+.idea
+*.log
+*.aux
+.synctex.gz
