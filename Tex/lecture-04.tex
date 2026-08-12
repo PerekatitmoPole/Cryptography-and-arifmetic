@@ -1,0 +1,134 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}\usepackage[T2A]{fontenc}\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,mathtools,geometry,microtype,parskip,enumitem,tikz}
+\geometry{margin=2.2cm}\usetikzlibrary{arrows.meta,positioning}
+\newcommand{\Z}{\mathbb Z}\newcommand{\F}{\mathbb F}\DeclareMathOperator{\ord}{ord}
+\begin{document}\section*{\centering Лекция 4}
+\section{Атаки на RSA}
+Пусть $n=pq$, а показатели $e,k$ удовлетворяют $ek\equiv1\pmod{\varphi(n)}$. Тогда $c=m^e\pmod n$ и $c^k=m^{ek}\equiv m\pmod n$.
+
+\textbf{Атака 1: известно $\varphi(n)$.} Имеем
+\[\varphi(n)=(p-1)(q-1)=pq-(p+q)+1,\qquad p+q=n-\varphi(n)+1.\]
+Значит, $p,q$ --- корни $x^2-(p+q)x+pq=0$.
+
+\textbf{Атака 2 (метод Ферма).} Для близких $p>q$ положим
+\[s=\frac{p-q}{2},\quad t=\frac{p+q}{2};\qquad t^2-s^2=n.\]
+Перебираем $t>\sqrt n$ до тех пор, пока $t^2-n=s^2$ не станет квадратом; тогда $p=t+s$, $q=t-s$.
+
+\textbf{Атака 3.} Если одно $m$ зашифровано как $c_1=m^{k_1}$, $c_2=m^{k_2}$ и $\gcd(k_1,k_2)=1$, то $sk_1+rk_2=1$ для некоторых $s,r\in\Z$, поэтому
+\[c_1^s c_2^r\equiv m\pmod n.\]
+
+\textbf{Атака 4 (мультипликативность).} Выбрав обратимый $y$, посылаем $c'=y^e c$. После расшифрования
+\[(c')^k\equiv y^{ek}c^k\equiv ym\pmod n,\]
+и умножение на $y^{-1}$ восстанавливает $m$.
+
+\textbf{Атака 5: известны $e$ и $k$.} Число $r=ek-1$ кратно $\varphi(n)$ и чётно. Для случайного $a$ последовательно делят показатель $r$ на $2$. Если получается нетривиальный корень из единицы $b^2\equiv1\pmod n$, $b\not\equiv\pm1$, то $\gcd(b-1,n)$ даёт нетривиальный делитель. Процедуру повторяют со случайными $a$.
+
+\section{Метод Полларда $p-1$}
+\textbf{Атака 6.} Метод работает, когда для делителя $p\mid n$ число $p-1$ состоит из малых простых множителей. По КТО
+\[(\Z/n\Z)^*\simeq(\Z/p\Z)^*\times(\Z/q\Z)^*.\]
+Берём $B$, кратное многим малым числам. Если $p-1\mid B$, то $x^B\equiv1\pmod p$. Если $q-1\nmid B$, то обычно $x^B\not\equiv1\pmod q$, и
+\[\gcd(x^B-1,n)=p.\]
+Можно брать
+\[B=\prod_{p_i\le N}p_i^{\lfloor\log_{p_i}N\rfloor}.\]
+
+\section{Квадратичные вычеты}
+Пусть $p$ нечётно. $a\in(\Z/p\Z)^*$ --- \textbf{квадратичный вычет}, если $a=x^2\pmod p$.
+
+\textbf{Критерий Эйлера.}
+\[a\text{ --- вычет}\iff a^{(p-1)/2}\equiv1\pmod p;\qquad a\text{ --- невычет}\iff a^{(p-1)/2}\equiv-1\pmod p.\]
+
+\textbf{Символ Лежандра:}
+\[\left(\frac ap\right)=\begin{cases}0,&p\mid a,\\1,&a\text{ --- вычет},\\-1,&a\text{ --- невычет}.\end{cases}\]
+Причём $\left(\frac ap\right)\equiv a^{(p-1)/2}\pmod p$.
+
+\textbf{Свойства:}
+\[\left(\frac{ab}{p}\right)=\left(\frac ap\right)\left(\frac bp\right),\quad
+\left(\frac{a+cp}{p}\right)=\left(\frac ap\right),\quad
+\left(\frac{a^2}{p}\right)=1,\quad
+\left(\frac{-1}{p}\right)=(-1)^{(p-1)/2}.\]
+
+\textbf{Лемма Гаусса.} Для $p\nmid a$ рассмотрим $a,2a,\ldots,\frac{p-1}{2}a$ и приведём остатки к $\{\pm1,\ldots,\pm\frac{p-1}{2}\}$. Если отрицательных представителей $\delta$, то
+\[\left(\frac ap\right)=(-1)^\delta.\]
+\textbf{Идея доказательства.} Абсолютные значения образуют перестановку $1,\ldots,(p-1)/2$. Поэтому
+\[a^{(p-1)/2}\left(\frac{p-1}{2}\right)!\equiv(-1)^\delta\left(\frac{p-1}{2}\right)!\pmod p,\]
+после сокращения применяется критерий Эйлера.
+
+\textbf{Квадратичный закон взаимности (Гаусс).} Для различных нечётных простых
+\[\left(\frac pq\right)\left(\frac qp\right)=(-1)^{\frac{p-1}{2}\frac{q-1}{2}},\qquad
+\left(\frac2p\right)=(-1)^{(p^2-1)/8}.\]
+\textbf{Пример:}
+\[\left(\frac{23}{53}\right)=\left(\frac{53}{23}\right)=\left(\frac7{23}\right)=-\left(\frac{23}{7}\right)=-\left(\frac27\right)=-1.\]
+
+\section{Квадратичное решето}
+\textbf{Атака 7.} Если найти
+\[x^2\equiv y^2\pmod n,\qquad x\not\equiv\pm y\pmod n,\]
+то $n\mid(x-y)(x+y)$, и $\gcd(x-y,n)$ либо $\gcd(x+y,n)$ даёт делитель.
+
+Выбирается факторная база $\mathcal B=\{p_1,\ldots,p_k\}$ и ищутся гладкие соотношения
+\[x_j^2\equiv\prod_{i=1}^k p_i^{e_{j,i}}\pmod n.\]
+Строится матрица $M=(e_{j,i}\bmod2)$ над $\F_2$. При числе соотношений больше $k$ возникает линейная зависимость. Произведение соответствующих равенств даёт
+\[X^2\equiv\prod_i p_i^{\text{чётная степень}}=Y^2\pmod n,\]
+после чего применяется НОД. В лекции далее упоминается Number Field Sieve.
+
+\section{Гольдвассер--Микали и символ Якоби}
+Алиса выбирает $n=pq$ и $a$ так, что $\left(\frac ap\right)=\left(\frac aq\right)=-1$. Для бита $m$ Боб выбирает случайный $r$ и посылает
+\[c=\begin{cases}r^2,&m=0,\\ ar^2,&m=1,\end{cases}\pmod n.\]
+Алиса определяет бит по $\left(\frac cp\right)$: для $m=0$ он равен $1$, а для $m=1$ равен $\left(\frac ap\right)=-1$.
+
+\textbf{Упражнение.} Почему Бобу для шифрования не требуется знать $p,q$?
+
+\textbf{Символ Якоби.} Если $n=p_1^{t_1}\cdots p_s^{t_s}$, то
+\[\left(\frac an\right)=\prod_{i=1}^s\left(\frac{a}{p_i}\right)^{t_i}.\]
+
+\section{Проблема дискретного логарифма}
+Пусть $G$ --- группа, $g,h\in G$ и $g^x=h$. Требуется найти $x=\log_g h$. Если $G$ циклическая и $g$ --- порождающий, логарифм существует для любого $h$. В частности, в $(\Z/p\Z)^*$ показатель рассматривается по модулю $p-1$. Выполняется
+\[\log_g(hs)=\log_g h+\log_g s.\]
+
+\section{Диффи--Хеллман}
+Пусть $\langle g\rangle=(\Z/p\Z)^*$. Алиса выбирает секрет $\alpha$, Боб --- $\beta$ и обмениваются $g^\alpha$, $g^\beta$. Общий секрет
+\[s=(g^\beta)^\alpha=(g^\alpha)^\beta=g^{\alpha\beta}.\]
+\begin{center}\begin{tikzpicture}[>=Latex,node distance=6cm]
+\node (A) {$A$};\node[right=of A] (B) {$B$};
+\draw[->,bend left=15] (A) to node[above] {$g^\alpha$} (B);
+\draw[->,bend left=15] (B) to node[below] {$g^\beta$} (A);
+\end{tikzpicture}\end{center}
+\textbf{DHP:} по $g^\alpha,g^\beta$ найти $g^{\alpha\beta}$. Решение DLP сразу решает DHP. Обратное сведение в общем случае в лекции отмечено как неизвестное.
+
+\section{Эль-Гамаль}
+Алиса выбирает $\alpha\in\Z/(p-1)\Z$ и публикует $h=g^\alpha$. Боб выбирает случайное $\beta\in\{1,\ldots,p-2\}$ и шифрует $m$:
+\[(c_1,c_2)=(g^\beta,mh^\beta).\]
+Алиса расшифровывает:
+\[c_1^{-\alpha}c_2=g^{-\alpha\beta}m(g^\alpha)^\beta=m.\]
+\textbf{Вопрос из лекции.} Почему нельзя повторно использовать $\beta$? При одинаковом $\beta$ первая компонента совпадает, а
+\[\frac{c_2}{c_2'}\equiv\frac{m}{m'}\pmod p,\]
+то есть возникает связь между сообщениями.
+
+\section{Алгоритмы вычисления дискретного логарифма}
+\textbf{Перебор.} Если $\ord(g)=N$, проверка $1,g,g^2,\ldots$ требует $O(N)$ шагов.
+
+\subsection*{Baby-step--giant-step (Шенкс)}
+Пусть $\ord(g)=N$, $n=1+\lfloor\sqrt N\rfloor$. Представим $x=in+j$, где $0\le j<n$. Тогда
+\[g^x=h\iff g^j=h(g^{-n})^i.\]
+Строятся списки
+\[I:\ 1,g,\ldots,g^{n-1},\qquad II:\ h,hg^{-n},h(g^{-n})^2,\ldots.\]
+Совпадение $g^j=h(g^{-n})^i$ даёт $x=in+j$. Временная сложность порядка $O(\sqrt N\log N)$ с учётом поиска/сортировки; память $O(\sqrt N)$.
+
+\subsection*{Алгоритм Полига--Хеллмана}
+Пусть
+\[N=\ord(g)=p_1^{e_1}\cdots p_t^{e_t}.\]
+Для каждого $i$ положим
+\[g_i=g^{N/p_i^{e_i}},\qquad h_i=h^{N/p_i^{e_i}}.\]
+Тогда $\ord(g_i)=p_i^{e_i}$ и из $g^x=h$ следует
+\[g_i^x=h_i.\]
+Решая эти DLP, получаем
+\[x\equiv y_i\pmod{p_i^{e_i}},\qquad i=1,\ldots,t.\]
+По китайской теореме об остатках восстанавливается $x\pmod N$.
+
+Если решение DLP в группе порядка $p_i^{e_i}$ занимает $O(\Omega_i)$ шагов, суммарно
+\[O\!\left(\sum_{i=1}^t\Omega_i+\log N\right).\]
+В частности, если использовать общий алгоритм порядка $O(\sqrt{p_i^{e_i}})$, сложность определяется крупнейшим простым степенным множителем порядка группы. В лекции сформулирован итог: достаточно уметь эффективно решать DLP в подгруппах простого степенного порядка; далее разложение порядка и КТО собирают полный ответ.
+
+\textbf{Замечание.} Для стойкости DLP-групп важно, чтобы порядок используемой подгруппы имел большой простой множитель: гладкий порядок делает алгоритм Полига--Хеллмана эффективным.
+
+\end{document}

@@ -8,11 +8,11 @@
 - Лекция 1 — [PDF](out/lecture-01.pdf) · [TeX](Tex/lecture-01.tex)
 - Лекция 2 — [PDF](out/lecture-02.pdf) · [TeX](Tex/lecture-02.tex)
 - Лекция 3 — [PDF](out/lecture-03.pdf) · [TeX](Tex/lecture-03.tex)
-- Лекция 4 — В разработке.
-- Лекция 5 — В разработке.
+- Лекция 4 — [PDF](out/lecture-04.pdf) · [TeX](Tex/lecture-04.tex)
+- Лекция 5 — [PDF](out/lecture-05.pdf) · [TeX](Tex/lecture-05.tex)
 - Лекция 6 — В разработке.
-- Лекция 7 - точно будет...
-- Лекция 8 - будет...
+- Лекция 7 - [PDF](out/lecture-07.pdf) · [TeX](Tex/lecture-07.tex)
+- Лекция 8 - [PDF](out/lecture-08.pdf) · [TeX](Tex/lecture-08.tex)
 
 ### Исходники (рукописные)
 - Лекция 1 — [PDF](Исходники/lecture-01.pdf)

@@ -1,0 +1,367 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}\geometry{margin=2.2cm}
+\usepackage{microtype,parskip,enumitem,tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\A}{\mathbb A}
+\newcommand{\Z}{\mathbb Z}
+\DeclareMathOperator{\mult}{mult}
+\DeclareMathOperator{\degop}{deg}
+\begin{document}
+\section*{\centering Лекция 5}
+\section{Экскурс в алгебраическую геометрию}
+
+\textbf{Алгебраическое многообразие} задаётся системой полиномиальных уравнений
+\[
+f_i(x_1,\ldots,x_n)=0,\qquad f_i\in k[x_1,\ldots,x_n],
+\]
+то есть является подмножеством $k^n$. Функции на таком множестве получают ограничением полиномов $g\in k[x_1,\ldots,x_n]$.
+
+\textbf{Кривая.} Для $f(x,y)\in k[x,y]$ множество
+\[
+C=\{(x,y)\in k^2\mid f(x,y)=0\}
+\]
+называем кривой.
+
+Над $k^n$ могут существовать ``параллельные'' прямые, поэтому удобно перейти к проективному пространству.
+
+\textbf{Определение.}
+\[
+\PP_k^n=(k^{n+1}\setminus\{0\})/{\sim},\qquad
+x\sim y\Longleftrightarrow x=ty\quad(t\in k^*).
+\]
+Точки записываются однородными координатами
+\[
+(x_0:\ldots:x_n)=(\lambda x_0:\ldots:\lambda x_n),\qquad \lambda\ne0.
+\]
+Например, $\PP^1_{\mathbb R}\simeq S^1/(x\sim-x)$, а $\PP^1_{\mathbb C}$ --- сфера Римана.
+
+\begin{center}
+\begin{tikzpicture}[scale=.8,>=Latex]
+  \draw (0,0) circle (1.45);
+  \draw[->] (-2,0)--(2,0);
+  \draw[->] (0,-2)--(0,2);
+  \foreach \a in {25,70,120,160} {\draw ({-2*cos(\a)},{-2*sin(\a)}) -- ({2*cos(\a)},{2*sin(\a)});}
+  \fill (1.18,.84) circle (1.8pt);
+  \fill (-1.18,-.84) circle (1.8pt);
+  \node[below=3mm] at (0,-2.05) {прямые через $0$ задают точки $\PP^1_{\mathbb R}$};
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Однородные координаты, гомогенизация и дегомогенизация}
+В $\PP_k^2$ однородные координаты задаются с точностью до общего ненулевого множителя:
+\[
+(x:y:z)=(\lambda x:\lambda y:\lambda z),\qquad \lambda\in k^*.
+\]
+Аффинная плоскость вкладывается в проективную как
+\[
+k^2\hookrightarrow\PP_k^2,\qquad (x,y)\longmapsto(x:y:1).
+\]
+Точки с $z=0$ называются \textbf{точками на бесконечности}.
+
+Полином $F(x,y,z)$ корректно задаёт уравнение $F=0$ в $\PP^2$, если он однороден. Для однородного полинома степени $d$
+\[
+F(tx,ty,tz)=t^dF(x,y,z).
+\]
+
+\textbf{Гомогенизация.}
+Пусть $f(x,y)\in k[x,y]$ и $d=\deg f$. Полагаем
+\[
+F(x,y,z)=z^d f\!\left(\frac{x}{z},\frac{y}{z}\right).
+\]
+Тогда $F$ --- однородный полином степени $d$.
+
+\textbf{Дегомогенизация.}
+Обратно, из однородного $F(x,y,z)$ получаем аффинный полином подстановкой
+\[
+f(x,y)=F(x,y,1).
+\]
+Таким образом,
+\[
+f(x,y)\quad\xrightarrow{\ \text{гомогенизация}\ }\quad F(x,y,z),
+\qquad
+F(x,y,z)\quad\xrightarrow{\ z=1\ }\quad f(x,y).
+\]
+
+\textbf{Примеры.}
+\begin{enumerate}[label=\arabic*)]
+\item Для окружности
+\[
+f(x,y)=x^2+y^2-1
+\]
+имеем $d=2$ и
+\[
+F(x,y,z)=z^2\left(\frac{x^2}{z^2}+\frac{y^2}{z^2}-1\right)
+=x^2+y^2-z^2.
+\]
+
+\item Для параболы
+\[
+f(x,y)=y-x^2
+\]
+получаем
+\[
+F(x,y,z)=z^2\left(\frac{y}{z}-\frac{x^2}{z^2}\right)=yz-x^2.
+\]
+Это невырожденная коника.
+
+\item Для каспа
+\[
+f(x,y)=y^2-x^3
+\]
+получаем
+\[
+F(x,y,z)=z^3\left(\frac{y^2}{z^2}-\frac{x^3}{z^3}\right)=y^2z-x^3.
+\]
+В начале координат имеется особенность типа касп.
+
+\item Для
+\[
+y^2=x^3+x^2=x^2(x+1)
+\]
+гомогенизация имеет вид
+\[
+y^2z=x^3+x^2z.
+\]
+В аффинной карте $z=1$ в точке $(0,0)$ имеется двойная точка.
+\end{enumerate}
+
+\begin{center}
+\begin{minipage}{0.48\textwidth}\centering
+\begin{tikzpicture}[scale=.72,>=Latex]
+  \draw[->] (-1.8,0)--(1.8,0) node[right] {$x$};
+  \draw[->] (0,-1.8)--(0,1.8) node[above] {$y$};
+  \draw (0,0) circle (1.15);
+  \node at (0,-1.55) {$x^2+y^2=1$};
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}{0.48\textwidth}\centering
+\begin{tikzpicture}[scale=.72,>=Latex]
+  \draw[->] (-1.8,0)--(1.8,0) node[right] {$x$};
+  \draw[->] (0,-.7)--(0,2.2) node[above] {$y$};
+  \draw[domain=-1.35:1.35,samples=80,smooth] plot (\x,{\x*\x});
+  \node at (0,-.55) {$y=x^2$};
+\end{tikzpicture}
+\end{minipage}
+
+\vspace{2mm}
+\begin{minipage}{0.48\textwidth}\centering
+\begin{tikzpicture}[scale=.78,>=Latex]
+  \draw[->] (-.65,0)--(2.0,0) node[right] {$x$};
+  \draw[->] (0,-1.55)--(0,1.55) node[above] {$y$};
+  \draw[domain=0:1.55,samples=100,smooth] plot (\x,{sqrt(\x*\x*\x)});
+  \draw[domain=0:1.55,samples=100,smooth] plot (\x,{-sqrt(\x*\x*\x)});
+  \fill (0,0) circle (1.5pt);
+  \node[align=center] at (.65,-1.75) {$y^2=x^3$\\касп};
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}{0.48\textwidth}\centering
+\begin{tikzpicture}[scale=.78,>=Latex]
+  \draw[->] (-1.45,0)--(1.8,0) node[right] {$x$};
+  \draw[->] (0,-1.55)--(0,1.55) node[above] {$y$};
+  \draw[domain=-1:1.5,samples=160,smooth] plot (\x,{sqrt(max(0,\x*\x*(\x+1)))});
+  \draw[domain=-1:1.5,samples=160,smooth] plot (\x,{-sqrt(max(0,\x*\x*(\x+1)))});
+  \fill (0,0) circle (1.5pt);
+  \node[align=center] at (.25,-1.75) {$y^2=x^3+x^2$\\двойная точка};
+\end{tikzpicture}
+\end{minipage}
+\end{center}
+
+\subsection*{Особые точки}
+Пусть
+\[
+C=\{F(x,y,z)=0\}\subset\PP^2.
+\]
+\textbf{Определение.} Пусть $P\in C$. Кратность $\mult_P C=m$ означает, что все частные производные $F$ порядка меньше $m$ обращаются в нуль в $P$, а среди производных порядка $m$ есть ненулевая. Точка кратности $1$ называется \textbf{гладкой} (неособой), а точка кратности $m\ge2$ --- особой.
+
+Для плоской проективной кривой особая точка $P$ удовлетворяет
+\[
+F(P)=F_x(P)=F_y(P)=F_z(P)=0.
+\]
+Например, для $y^2=x^3+x^2$ точка $(0,0)$ имеет кратность $2$.
+
+\textbf{Замечание.} Кривая называется гладкой, если все её точки неособые.
+
+\subsection*{Приводимость}
+Если
+\[
+f(x,y)=\prod_{i=1}^m p_i(x,y)^{s_i},
+\]
+то геометрически $\{f=0\}$ есть объединение компонент $\{p_i=0\}$. Кривая называется неприводимой, если её уравнение нельзя разложить в произведение полиномов меньшей степени (с точностью до констант).
+
+\section{Рациональные кривые}
+\textbf{Определение.} Неприводимая кривая $C=\{f(x,y)=0\}$ называется рациональной, если существуют дробно-рациональные функции
+\[
+\varphi_1(t),\varphi_2(t)\in k(t)
+\]
+такие, что почти для всех $t\in k$
+\[
+f(\varphi_1(t),\varphi_2(t))=0,
+\]
+и почти каждая точка $P\in C$ получается как $P=(\varphi_1(t),\varphi_2(t))$.
+
+\textbf{Пример: окружность.} Рассмотрим
+\[
+C:\quad x^2+y^2=1
+\]
+и фиксированную точку $(0,1)\in C$. Проведём через неё прямую с параметром $c$:
+\[
+x=c-cy=c(1-y),\qquad\text{то есть}\qquad y=1-\frac{x}{c}.
+\]
+Подставляя в уравнение окружности,
+\begin{align*}
+c^2(1-y)^2+y^2-1&=0,\\
+c^2-2c^2y+c^2y^2+y^2-1&=0,\\
+(y-1)\bigl((c^2+1)y-(c^2-1)\bigr)&=0.
+\end{align*}
+Корень $y=1$ соответствует исходной точке, а вторая точка пересечения имеет координаты
+\[
+y=\frac{c^2-1}{c^2+1},\qquad
+x=c-c\frac{c^2-1}{c^2+1}=\frac{2c}{c^2+1}.
+\]
+Таким образом,
+\[
+\varphi(c)=\left(\frac{2c}{c^2+1},\frac{c^2-1}{c^2+1}\right)
+\]
+задаёт рациональную параметризацию окружности за исключением одной точки.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0,>=Latex]
+  \draw[->] (-2.1,0)--(2.1,0) node[right] {$x$};
+  \draw[->] (0,-1.7)--(0,1.9) node[above] {$y$};
+  \draw (0,0) circle (1.25);
+  \coordinate (P) at (0,1.25);
+  \fill (P) circle (1.7pt) node[above right] {$(0,1)$};
+  \draw (-1.75,-.8)--(P);
+  \draw (-1.45,-.25)--(P);
+  \draw (-.9,.25)--(P);
+  \draw (.65,-1.0)--(P);
+  \draw (1.35,-.45)--(P);
+  \node[right] at (1.35,-.45) {$L(t,c)$};
+\end{tikzpicture}
+\end{center}
+
+\textbf{Примеры.}
+\[
+y^2=x^3:\quad \varphi_1(t)=t^2,\quad\varphi_2(t)=t^3,
+\]
+\[
+y^2=x^3+x^2=x^2(x+1):\quad \varphi_1(t)=t^2-1,\quad
+\varphi_2(t)=t(t^2-1).
+\]
+
+\textbf{Факт.} Коника $C\subset\PP^2$, имеющая хотя бы одну $k$-рациональную точку, рациональна: параметризация получается пучком прямых через эту точку.
+
+\textbf{Замечание.} Невырожденные коники неприводимы и гладкие.
+
+\section{Рациональные отображения и бирациональность}
+Пусть $C_1,C_2$ --- кривые. Рациональное отображение
+\[
+\varphi:C_1\dashrightarrow C_2
+\]
+задаётся парой дробно-рациональных функций
+\[
+\varphi(P)=(\varphi_1(P),\varphi_2(P)),\qquad
+\varphi_i=\frac{f_i}{g_i},
+\]
+определённых там, где знаменатели не обращаются в нуль. Образ должен лежать на $C_2$.
+
+Кривые $C_1,C_2$ называются \textbf{бирационально эквивалентными}, если существуют рациональные отображения
+\[
+\varphi:C_1\dashrightarrow C_2,\qquad \psi:C_2\dashrightarrow C_1,
+\]
+обратные друг другу там, где обе стороны определены.
+
+\textbf{Пример.} Аффинная плоскость $k^2$ бирациональна $\PP^2$:
+\[
+(x,y)\mapsto(x:y:1),\qquad (x:y:z)\mapsto\left(\frac{x}{z},\frac{y}{z}\right).
+\]
+Геометрически аффинная карта $z=1$ является плоскостью внутри проективной плоскости, а $z=0$ --- прямой на бесконечности.
+
+\begin{center}
+\begin{tikzpicture}[scale=.82,>=Latex]
+  \draw[->] (-2.4,0)--(2.4,0) node[right] {$x$};
+  \draw[->] (0,-1.7)--(0,2.1) node[above] {$z$};
+  \draw[->] (0,0)--(-1.5,-1.25) node[below] {$y$};
+  \draw (-2.15,1.05) ellipse (2.0 and .48);
+  \node at (1.6,1.55) {$k^2\simeq\{z=1\}$};
+  \draw (-.15,-1.15) ellipse (.55 and 1.45);
+  \node[right] at (.45,-1.0) {$z=0$};
+\end{tikzpicture}
+\end{center}
+Рациональная кривая по определению бирациональна $\PP^1$.
+
+\textbf{Упражнение.} Построить бирациональность между
+\[
+x^2+y^2=1
+\quad\text{и}\quad
+y^2=x^3-4x^2.
+\]
+
+\section{Исчислительная геометрия: теорема Безу}
+\textbf{Теорема Безу.} Пусть $C_1,C_2$ --- две проективные плоские кривые над $\mathbb C$ степеней $m$ и $n$, не имеющие общей компоненты. Тогда, с учётом кратностей пересечения,
+\[
+|C_1\cap C_2|=mn.
+\]
+
+Однородный полином степени $n$ в трёх переменных имеет вид
+\[
+F(x,y,z)=\sum_{i+j+k=n}a_{ijk}x^iy^jz^k.
+\]
+Число его коэффициентов равно $\binom{n+2}{2}$. С точностью до общего ненулевого множителя пространство кривых степени $n$ имеет размерность
+\[
+\binom{n+2}{2}-1=\frac{n(n+3)}2.
+\]
+Поэтому через $\frac{n(n+3)}2$ точек в общем положении можно провести кривую степени $n$.
+
+\subsection*{Кубики и девять точек}
+\textbf{Теорема.} Пусть $F_1,F_2$ --- две проективные кубики без общей компоненты, пересекающиеся в девяти точках. Любая кубика $F$, проходящая через восемь из этих точек, проходит и через девятую.
+
+Доказательство строится с использованием представления
+\[
+F=c_1F_1+c_2F_2
+\]
+и применением теоремы Безу к подходящим вспомогательным кривым.
+
+\section{Род кривой}
+Топологически род $g$ соответствует числу ``ручек`` поверхности.
+
+\textbf{Теорема.} Пусть $C$ --- неприводимая проективная плоская кривая степени $n$, имеющая $m$ двойных точек. Тогда
+\[
+g(C)=\frac{(n-1)(n-2)}2-m\in\mathbb N.
+\]
+Отсюда
+\[
+m\le \frac{(n-1)(n-2)}2.
+\]
+
+\textbf{Идея доказательства.} Проводят через двойные точки вспомогательную кривую степени $n-2$ и оценивают число пересечений по теореме Безу.
+
+\textbf{Примеры.}
+\begin{center}
+\begin{tikzpicture}[scale=.68]
+  \draw (0,0) ellipse (1.35 and .72); \draw (0,0) ellipse (.45 and .72);
+  \node[below] at (0,-1) {$g=1$};
+\end{tikzpicture}\qquad
+\begin{tikzpicture}[scale=.68]
+  \draw (0,0) circle (1.05); \draw (-1.05,0) arc (180:360:1.05 and .28);
+  \node[below] at (0,-1.25) {$g=0$};
+\end{tikzpicture}\qquad
+\begin{tikzpicture}[scale=.68]
+  \draw plot[smooth cycle,tension=.8] coordinates {(-1.8,0)(-1.2,.7)(-.5,.55)(0,.95)(.5,.55)(1.2,.7)(1.8,0)(1.2,-.7)(.5,-.55)(0,-.95)(-.5,-.55)(-1.2,-.7)};
+  \draw (-1.15,0) ellipse (.34 and .55); \draw (0,0) ellipse (.34 and .55); \draw (1.15,0) ellipse (.34 and .55);
+  \node[below] at (0,-1.25) {$g=3$};
+\end{tikzpicture}
+\end{center}
+\begin{enumerate}[label=\arabic*)]
+\item Для прямой $L$: $g(L)=0$.
+\item Для неприводимой коники: $n=2$, $m=0$, поэтому $g(C)=0$.
+\item Для $C:\ y^2=x^3+x^2$ имеем $n=3$, одну двойную точку, поэтому $g(C)=0$.
+\item Для гладкой кубики, например $y^2=x^3-x$, имеем $n=3$, $m=0$, поэтому $g(C)=1$. Топологически комплексная гладкая кубика соответствует тору; возникает решётка $\Lambda\simeq\Z\oplus\Z$ и представление $\mathbb C/\Lambda$.
+\end{enumerate}
+
+\end{document}

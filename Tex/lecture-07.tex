@@ -1,0 +1,163 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}\usepackage[T2A]{fontenc}\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,mathtools,geometry,microtype,parskip,enumitem,tikz}
+\geometry{margin=2.2cm}\usetikzlibrary{arrows.meta,positioning,calc}
+\newcommand{\Z}{\mathbb Z}\newcommand{\F}{\mathbb F}\newcommand{\Kbar}{\overline K}
+\newcommand{\Div}{\operatorname{Div}}\newcommand{\PDiv}{\operatorname{PDiv}}\newcommand{\ord}{\operatorname{ord}}\newcommand{\Supp}{\operatorname{Supp}}
+\begin{document}\section*{\centering Лекция 7}
+\section{Обмен ключами: обобщение Диффи--Хеллмана}
+Пусть $G=\langle g\rangle$ --- циклическая группа. Участники $A,B,C$ выбирают секреты $a,b,c\in\Z$. В трёхстороннем варианте первый круг передаёт $g^a,g^b,g^c$, второй --- степени с произведениями двух секретов.
+\begin{center}\begin{tikzpicture}[>=Latex]\node(A)at(0,2){$A$};\node(B)at(5,2){$B$};\node(C)at(2.5,-1){$C$};\draw[->,bend left=12](A)to node[above]{$g^a$}(B);\draw[->,bend left=18](B)to node[right]{$g^b$}(C);\draw[->,bend left=18](C)to node[left]{$g^c$}(A);\draw[->,bend left=38](A)to node[above]{$g^{ca}$}(B);\draw[->,bend left=38](B)to node[right]{$g^{ab}$}(C);\draw[->,bend left=38](C)to node[left]{$g^{bc}$}(A);\end{tikzpicture}\end{center}
+В обозначениях рукописи:
+\[A=\langle g^b,g^{ca}\rangle,\quad B=\langle g^a,g^{cb}\rangle,\quad C=\langle g^b,g^{ac}\rangle.\]
+\subsection*{Однораундовый вариант}
+Пусть $G,H$ --- циклические группы и $\langle\cdot,\cdot\rangle:G\times G\to H$ --- билинейное спаривание:
+\[\langle g_1g_2,g\rangle=\langle g_1,g\rangle\langle g_2,g\rangle,\qquad \langle g,g_1g_2\rangle=\langle g,g_1\rangle\langle g,g_2\rangle.\]
+В рукописи также требуется невырожденность: $\langle g,g\rangle$ порождает $H$.
+\subsection*{Идея IBE}
+Открытые параметры: $G=\langle g\rangle$, спаривание, $H_1:\{0,1\}^*\to G$, $H_2:H\to\{0,1\}^{\ell}$. Центр выбирает $s\in\Z$. Для $ID_A$:
+\[k_A=H_1(ID_A),\qquad C_A=H_1(ID_A)^s.\]
+В рукописи шифртекст записан как
+\[(C_1,C_2)=\bigl(g^\varepsilon,M\oplus H_2(\langle k_A,k\rangle^\varepsilon)\bigr).\]
+% TODO(source): стр. 1, символ k в формуле шифрования неоднозначен.
+Расшифрование использует билинейность:
+\[C_2\oplus H_2(\langle C_A,C_1\rangle)\rightsquigarrow M\oplus H_2(\langle H_1(ID_A),g^s\rangle^\varepsilon)\oplus H_2(\langle H_1(ID_A)^s,g^\varepsilon\rangle)=M.\]
+\section{Дивизоры на кривой}
+Пусть $E$ --- гладкая проективная кривая над $K$.
+\textbf{Определение.}
+\[\Div(E)=\left\{\sum_{P_i\in E(\Kbar)}a_i[P_i]\mid a_i\in\Z,\ \text{почти все }a_i=0\right\}.\]
+Это группа дивизоров Вейля. Степень:
+\[\deg:\Div(E)\to\Z,\qquad \sum_i a_i[P_i]\mapsto\sum_i a_i,\qquad \ker(\deg)=\Div^0(E).\]
+В рукописи вводится сюръективный гомоморфизм $\Phi:\Div^0(E)\to E(\Kbar)$ и записано
+\[\Div^0(E)/\ker\Phi\simeq E(\Kbar).\]
+Примеры: $\overline{\mathbb R}=\mathbb C$, $\overline{\F_p}=\bigcup_{i\ge1}\F_{p^i}$.
+\subsection*{Рациональные функции, нули и полюса}
+$f\in K(E)$ --- рациональная функция на кривой. Для $P\in E$ функция имеет нуль, если $f(P)=0$, и полюс, если $f(P)=\infty$; последнее эквивалентно нулю $1/f$.
+\textbf{Определение.} Если $u_P$ --- локальный параметр, то
+\[f=u_P^{\ord_P(f)}g,\]
+где $g$ не имеет ни нуля, ни полюса в $P$; число $\ord_P(f)$ --- порядок нуля или полюса.
+Для $E:y^2=x^3-x$ в точке $(0,0)$ берётся $u=y$; из $x=y^2/(x^2-1)$ следует
+\[\ord_{(0,0)}(x)=2,\qquad \ord_{(0,0)}(x/y)=1.\]
+Для $E:y^2=x^3+Ax+B$ у $\infty$ берётся $u_\infty=x/y$:
+\[\left(\frac xy\right)^2=\frac1x\left(1+\frac A{x^2}+\frac B{x^3}\right)^{-1},\qquad \ord_\infty(x)=-2.\]
+На $\mathbb P^1$, если $f=x_0x_1$, $g=(x_0-x_1)^2$, то $\ord_{(1:0)}(f)=1$, $\ord_{(1:1)}(g)=2$.
+\textbf{Определение.} Для $f\in\Kbar(E)^*$:
+\[\operatorname{div}(f)=\sum_{P\in E(\Kbar)}\ord_P(f)[P].\]
+Подгруппа главных дивизоров:
+\[\PDiv(E)=\left\{\sum_i a_i\operatorname{div}(f_i)\mid a_i\in\Z,\ f_i\in\Kbar(E)^*\right\}\subset\Div^0(E).\]
+\textbf{Свойства.}
+\begin{enumerate}[label=\arabic*)]
+\item $\deg(\operatorname{div}(f))=0$; в рукописи это объясняется записью $f=R/S$, где $R,S$ имеют одинаковую степень.
+\item $\operatorname{div}(fg)=\operatorname{div}(f)+\operatorname{div}(g)$ и $\operatorname{div}(1/f)=-\operatorname{div}(f)$.
+\item Если $f$ не имеет ни нулей, ни полюсов, то $f=\mathrm{const}$ (в рукописи: теорема Лиувилля).
+\end{enumerate}
+\section{Теорема Абеля}
+\textbf{Теорема Абеля.}
+\[\Div^0(E)/\PDiv(E)\xrightarrow[\Phi]{\sim}E(\Kbar).\]
+Левая часть --- группа классов дивизоров Вейля степени $0$.
+
+\textbf{Пример на $\mathbb P^1$.} Для $f=x_0x_1$, $g=(x_0-x_1)^2$, $\psi=f/g$ в обозначениях рукописи
+\[\operatorname{div}(\psi)=[P_0]-[P_1]-2[Q].\]
+Для $\mathbb P^1$ отображение $\deg:\Div(\mathbb P^1)\to\Z$ сюръективно и
+\[\ker(\deg)=\PDiv(\mathbb P^1),\qquad \Div(\mathbb P^1)/\PDiv(\mathbb P^1)\simeq\Z.\]
+Если $\sum_i a_i[P_i]\in\ker(\deg)$, то $\sum_i a_i=0$; в рукописи для соответствующей функции записана конструкция
+\[\prod_{i=1}^m(xy_i-yx_i)^{a_i}.\]
+
+\subsection*{Координатные функции на эллиптической кривой}
+Пусть $x^3+Ax+B=(x-\alpha_1)(x-\alpha_2)(x-\alpha_3)$ и $y^2-B=(y-\beta)(y+\beta)$. Для $P_i=(\alpha_i,0)$ и $\pm Q=(0,\pm\beta)$:
+\[\operatorname{div}(x)=[Q]+[-Q]-2[\infty],\]
+\[\operatorname{div}(y)=[P_1]+[P_2]+[P_3]-3[\infty].\]
+Если $P_1,P_2,P_3$ лежат на прямой $\ell:f(x,y)=ax+by+c=0$, то
+\[\operatorname{div}(f)=[P_1]+[P_2]+[P_3]-3[\infty].\]
+Для вертикальной прямой $x-x_3=0$ через $P_3$ и $-P_3$:
+\[\operatorname{div}(x-x_3)=[P_3]+[-P_3]-2[\infty].\]
+Поэтому
+\[\operatorname{div}\left(\frac{ax+by+c}{x-x_3}\right)=[P_1]+[P_2]-[-P_3]-[\infty],\]
+то есть $[P_1]+[P_2]\equiv[-P_3]$ по модулю главных дивизоров.
+
+\subsection*{Критерий главного дивизора}
+\textbf{Теорема.} Для $D\in\Div^0(E)$
+\[D\in\PDiv(E)\Longleftrightarrow\Phi(D)=\infty.\]
+\textbf{Идея доказательства.} Из соотношения для трёх точек на прямой:
+\[[P_1]+[P_2]\equiv[P_1+P_2]+[\infty]\pmod{\PDiv(E)}.\]
+Последовательно применяя его к положительной и отрицательной частям $D$, получают
+\[D=[R]-[Q]+n[\infty]+\operatorname{div}(\widetilde g).\]
+Так как $\deg D=0$, то $n=0$, и $\Phi(D)=R-Q$. Поэтому $\Phi(D)=\infty$ эквивалентно $R=Q$, то есть главности $D$.
+В частности, $\operatorname{div}(h)=[P]-[Q]$ для некоторой $h\in\Kbar(E)$ возможно только при $P=Q$.
+Итак,
+\[\Phi:\Div^0(E)/\PDiv(E)\xrightarrow{\sim}E(\Kbar),\qquad [P]-[\infty]\mapsto P.\]
+
+\subsection*{Пример над $\F_{11}$}
+Рассматривается $E:y^2=x^3+4x\pmod{11}$ и
+\[D=[(0,0)]+[(2,4)]+[(4,5)]+[(6,3)]-4[\infty].\]
+Формулы сложения:
+\[x_{P+Q}=\left(\frac{y_Q-y_P}{x_Q-x_P}\right)^2-x_P-x_Q,\]
+\[y_{P+Q}=-\left(\frac{y_Q-y_P}{x_Q-x_P}\right)(x_{P+Q}-x_P)-y_P.\]
+В рукописи вычислено:
+\[(0,0)+(2,4)=(2,-4),\quad (2,-4)+(4,5)=(6,8),\quad (6,8)+(6,3)=\infty.\]
+Следовательно, $\Phi(D)=\infty$, а $\deg D=0$, поэтому $D$ главный.
+
+Прямая через $(0,0)$ и $(2,4)$: $y-2x=0$; точка $(2,4)$ имеет кратность $2$, поэтому
+\[\operatorname{div}(y-2x)=[(0,0)]+2[(2,4)]-3[\infty].\]
+Вертикальная прямая $x-2=0$ даёт
+\[\operatorname{div}(x-2)=[(2,4)]+[(2,-4)]-2[\infty].\]
+Отсюда часть $D$ переписывается через $\operatorname{div}((y-2x)/(x-2))$.
+
+Прямая через $(4,5)$ и $(6,3)$ имеет уравнение $y+x-9=0$ (то же, что $y+x+2=0$ в $\F_{11}$), и в рукописи используется
+\[(4,5)+(6,3)=(2,4).\]
+После подстановки получено
+\begin{align*}
+D&=\operatorname{div}(x-2)+\operatorname{div}\left(\frac{y-2x}{x-2}\right)+\operatorname{div}\left(\frac{y+x+2}{x-2}\right)\\
+&=\operatorname{div}\left(\frac{(y-2x)(y+x+2)}{x-2}\right)\\
+&=\operatorname{div}(x^2-y).
+\end{align*}
+\section{Спаривание Вейля}
+Теорема Абеля даёт изоморфизм
+\[\Phi:\Div^0(E)/\PDiv(E)\xrightarrow{\sim}E(\Kbar).\]
+Для $m\ge1$ рассматривается ограничение на $m$-кручение:
+\[\Phi:\bigl(\Div^0(E)/\PDiv(E)\bigr)[m]\xrightarrow{\sim}E(\Kbar)[m],\]
+где $E(\Kbar)[m]$ --- множество точек $m$-кручения ($mP=0$).
+
+Для $f\in\Kbar(E)$ и дивизора $D=\sum_i a_i[P_i]$ определяют
+\[f(D)=\prod_i f(P_i)^{a_i}\in\Kbar,\]
+если $\operatorname{div}(f)\cap\Supp(D)=\varnothing$.
+
+\textbf{Факт (взаимность Вейля).} Для $f_1,f_2\in\Kbar(E)$:
+\[f_1(\operatorname{div}(f_2))=f_2(\operatorname{div}(f_1)).\]
+
+Пусть $D_1,D_2\in\Div^0(E)[m]$. Тогда $m\Phi(D_i)=\infty$, и по теореме Абеля существуют $f_1,f_2\in\Kbar(E)$ такие, что
+\[mD_1=\operatorname{div}(f_1),\qquad mD_2=\operatorname{div}(f_2).\]
+При $\Supp(D_1)\cap\Supp(D_2)=\varnothing$ положим
+\[\langle D_1,D_2\rangle=\frac{f_1(D_2)}{f_2(D_1)}\in\Kbar.\]
+Тогда
+\[\langle D_1,D_2\rangle^m=\frac{f_1(mD_2)}{f_2(mD_1)}=\frac{f_1(\operatorname{div}(f_2))}{f_2(\operatorname{div}(f_1))}=1\]
+по взаимности Вейля. Следовательно,
+\[\operatorname{Im}\langle\cdot,\cdot\rangle\subset\mu_m(\Kbar)=\{x\in\Kbar\mid x^m=1\}.\]
+Спаривание корректно определено на классах $m$-кручения.
+
+\textbf{Свойства.}
+\begin{enumerate}[label=\arabic*)]
+\item Кососимметрия:
+\[\langle D_1,D_2\rangle=\langle D_2,D_1\rangle^{-1}.\]
+\item Билинейность. Если $mD_1=\operatorname{div}(f_1)$, $mD_1'=\operatorname{div}(f_1')$, $mD_2=\operatorname{div}(f_2)$, то
+\[m(D_1+D_1')=\operatorname{div}(f_1f_1')\]
+и
+\[\langle D_1+D_1',D_2\rangle=\langle D_1,D_2\rangle\langle D_1',D_2\rangle.\]
+\item Для $P$ --- точки $m$-кручения:
+\[\langle P,P\rangle=1.\]
+Действительно, $\langle P,P\rangle^m=1$ и $\langle P,P\rangle^{-1}=\langle P,P\rangle$, откуда в рукописи делается вывод $\langle P,P\rangle=1$.
+\item Невырожденность: если $P\ne\infty$ и $Q\notin\langle P\rangle$, то $\langle P,Q\rangle\ne1$.
+\end{enumerate}
+Итак, спаривание Вейля имеет вид
+\[E(\Kbar)[m]\times E(\Kbar)[m]\longrightarrow\mu_m(\Kbar).\]
+
+\subsection*{Как вычислять}
+Для $P,Q\in E(\Kbar)[m]$ берутся
+\[D_P=[P]-[\infty],\qquad D_Q=[Q]-[\infty],\]
+и функции $f_P,f_Q$ с $mD_P=\operatorname{div}(f_P)$, $mD_Q=\operatorname{div}(f_Q)$. Чтобы носители не пересекались, в рукописи предлагается заменить
+\[D_Q\quad\text{на}\quad \widetilde D_Q=[Q+S]-[S],\]
+где $S\in E(\Kbar)\setminus\{\infty,P,-Q,P-Q\}$ и $\Phi(\widetilde D_Q)=Q$. Тогда
+\[e_m(P,Q)=\langle D_P,\widetilde D_Q\rangle=\frac{f_P(\widetilde D_Q)}{\widetilde f_Q(D_P)}\]
+и, в развёрнутой форме рукописи,
+\[e_m(P,Q)=\frac{f_P(Q+S)/f_P(S)}{\widetilde f_Q(P)/\widetilde f_Q(\infty)}.\]
+\end{document}

@@ -1,0 +1,127 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}\usepackage[T2A]{fontenc}\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,mathtools,geometry,microtype,parskip,enumitem,tikz}
+\geometry{margin=2.2cm}\usetikzlibrary{arrows.meta,positioning,calc}
+\newcommand{\Z}{\mathbb Z}\newcommand{\F}{\mathbb F}\newcommand{\Kbar}{\overline K}
+\newcommand{\Div}{\operatorname{Div}}\newcommand{\PDiv}{\operatorname{PDiv}}\newcommand{\ord}{\operatorname{ord}}\newcommand{\Supp}{\operatorname{Supp}}
+\begin{document}
+\section*{\centering Лекция 8}
+\section{Спаривание Вейля: продолжение}
+По теореме Абеля $\Div^0(E)/\PDiv(E)\simeq E(\Kbar)$. На $m$-кручении получаем спаривание Вейля
+\[e_m:E[m]\times E[m]\to\mu_m(\Kbar).\]
+Для $D_1,D_2\in\Div^0(E)[m]$ выберем $f_{D_i}$ с $\operatorname{div}(f_{D_i})=mD_i$. Если $\Supp(D_1)\cap\Supp(D_2)=\varnothing$, то
+\[(D_1,D_2)=\frac{f_{D_1}(D_2)}{f_{D_2}(D_1)}\in\Kbar^*.\]
+
+\textbf{Свойства.}
+\begin{enumerate}[label=\arabic*)]
+\item Билинейность: $e_m(P_1+P_2,Q)=e_m(P_1,Q)e_m(P_2,Q)$, и аналогично по второму аргументу.
+\item Антисимметрия: $e_m(P,Q)=e_m(Q,P)^{-1}$; в частности, $e_m(P,P)=1$.
+\item Невырожденность: для $P\ne\infty$ существует $Q$ с $e_m(P,Q)\ne1$.
+\end{enumerate}
+
+\subsection*{Практическая формула}
+Пусть $D_P=[P]-[\infty]$, $D_Q=[Q]-[\infty]$. Чтобы носители не пересекались, берут
+\[S=(x_0,y_0)\in E\setminus\{P,Q,-P-Q,\infty\},\qquad \widetilde D_Q=[Q+S]-[S].\]
+Тогда
+\[e_m(P,Q)=\frac{f_P(Q+S)/f_P(S)}{\widetilde f_Q(P)/\widetilde f_Q(\infty)}.\]
+
+\section{Пример: вычисление $e_2$}
+Рассмотрим $E:y^2=x^3-x$ над $\F_p$, $p\ne2$. Тогда
+\[E[2]\simeq\Z/2\Z\times\Z/2\Z=\{P_1=(1,0),P_2=(-1,0),P_3=(0,0),\infty\}.\]
+Можно взять
+\[f_{P_1}=x-1,\quad f_{P_2}=x+1,\quad f_{P_3}=x,\qquad \operatorname{div}(f_{P_i})=2[P_i]-2[\infty].\]
+Пусть $S=(x_0,y_0)\in E$. Сначала вычислим $P_1+S$. По формуле сложения
+\[x_{P_1+S}=\left(\frac{y_0}{x_0-1}\right)^2-x_0-1.\]
+Так как $y_0^2=x_0^3-x_0=x_0(x_0-1)(x_0+1)$,
+\begin{align*}
+x_{P_1+S}
+&=\frac{y_0^2-(x_0+1)(x_0-1)^2}{(x_0-1)^2}\\
+&=\frac{x_0^2-1}{(x_0-1)^2}=\frac{x_0+1}{x_0-1}.
+\end{align*}
+Для второй координаты
+\[y_{P_1+S}=-\frac{y_0}{x_0-1}\left(\frac{x_0+1}{x_0-1}-1\right)=-\frac{2y_0}{(x_0-1)^2}.\]
+Далее
+\[P_3-S=(0,0)+(x_0,-y_0),\]
+и его первая координата равна
+\[x_{P_3-S}=\left(\frac{-y_0}{x_0}\right)^2-x_0=\frac{y_0^2-x_0^3}{x_0^2}=-\frac1{x_0}.\]
+Следовательно,
+\begin{align*}
+e_2(P_3,P_1)
+&=\frac{f_{P_3}(P_1+S)/f_{P_3}(S)}{f_{P_1}(P_3-S)/f_{P_1}(-S)}\\
+&=\frac{\dfrac{x_0+1}{x_0(x_0-1)}}{-\dfrac{x_0+1}{x_0(x_0-1)}}=-1.
+\end{align*}
+По антисимметрии $e_2(P_1,P_3)=-1$. Так как $P_2=P_1+P_3$, по билинейности
+\[e_2(P_1,P_2)=e_2(P_1,P_1)e_2(P_1,P_3)=-1,\]
+и аналогично $e_2(P_2,P_3)=-1$. Поэтому
+\[\begin{array}{c|ccc}e_2&P_1&P_2&P_3\\\hline P_1&1&-1&-1\\P_2&-1&1&-1\\P_3&-1&-1&1\end{array}\]
+
+\subsection*{Следствие билинейности}
+Для $a,b,c,d\in\Z$:
+\begin{align*}
+e_m(aP+bQ,cP+dQ)
+&=e_m(P,P)^{ac}e_m(P,Q)^{ad}e_m(Q,P)^{bc}e_m(Q,Q)^{bd}\\
+&=e_m(P,Q)^{ad-bc}\\
+&=e_m(P,Q)^{\det\!\begin{psmallmatrix}a&b\\c&d\end{psmallmatrix}}.
+\end{align*}
+
+\section{Криптосистема Boneh--Franklin}
+Рассматривается кривая
+\[E:y^2=x^3+1\quad\text{над }\F_p,\qquad p\equiv2\pmod3.\]
+Выбирается $\omega\in\F_{p^2}^*$ --- корень третьей степени из единицы:
+\[\omega^3=1,\qquad\omega\notin\F_p.\]
+В рукописи отмечено: $\ord(\omega)=3\nmid(p-1)=\ord(\F_p^*)$.
+
+Определим
+\[\beta:E(\F_p)\to E(\F_{p^2}),\qquad (x,y)\mapsto(\omega x,y),\quad \beta(\infty)=\infty.\]
+Это действительно точка той же кривой, поскольку $(\omega x)^3+1=x^3+1=y^2$.
+
+\textbf{Наблюдение.} Пусть $P$ имеет порядок $n$. В рукописи доказывается, что образ $\beta(P)$ не попадает в используемую циклическую подгруппу $\langle P\rangle$.
+
+\textbf{Доказательство.} Предположим, что $aP=b\beta(P)$ для некоторых $a,b\in\Z$.
+Если $bP=\infty$, то $n\mid b$, а значит и $aP=\infty$, то есть $n\mid a$.
+Если $bP\ne\infty$, положим $bP=(x,y)$, где $x,y\in\F_p$. Тогда
+\[\beta(bP)=(\omega x,y).\]
+Чтобы эта точка снова имела координаты в $\F_p$, необходимо $x=0$, поскольку $\omega\notin\F_p$. Тогда $y^2=1$, то есть $bP=(0,\pm1)$. Эти точки имеют порядок $3$, откуда получается ограничение $3\mid n$; в используемой далее подгруппе этот случай исключён.
+% TODO(source): стр. 2--3: точная формулировка ограничения на n/ell в рукописи сокращена; не усиливаем её без источника.
+
+Поэтому вводится модифицированное спаривание
+\[\widetilde e_n(P_1,P_2)=e_n(P_1,\beta(P_2)),\]
+которое невырождено на выбранной циклической подгруппе.
+
+\section{IBE на основе модифицированного спаривания}
+\subsection*{Настройка}
+Сервер:
+\begin{enumerate}[label=\arabic*)]
+\item выбирает простое $p=6\ell-1$;
+\item выбирает $P\in E(\F_p)$ порядка $\ell$;
+\item задаёт $H_1:\{0,1\}^*\to E[\ell]$ и $H_2$ со значениями в битовых строках длины $n$;
+\item выбирает секрет $s\in\F_\ell^*$ и публикует $P_{\mathrm{pub}}=sP$.
+\end{enumerate}
+Открыты $P,H_1,H_2,P_{\mathrm{pub}}$; $s$ остаётся закрытым.
+
+\subsection*{Закрытый ключ пользователя}
+Для идентификатора $ID$:
+\[Q_{ID}=H_1(ID),\qquad D_{ID}=sQ_{ID}.\]
+Сервер передаёт пользователю $D_{ID}$.
+
+\subsection*{Шифрование сообщения $A\to B$}
+Отправитель выбирает $r\in\F_\ell^*$ и вычисляет
+\[g_{ID}=\widetilde e_\ell(Q_{ID},P_{\mathrm{pub}}).\]
+Шифртекст:
+\[(C_1,C_2)=\left(rP,\ M\oplus H_2(g_{ID}^{\,r})\right).\]
+
+\subsection*{Расшифрование и проверка корректности}
+Получатель вычисляет
+\[h_{ID}=\widetilde e_\ell(D_{ID},C_1),\qquad m=C_2\oplus H_2(h_{ID}).\]
+По билинейности
+\begin{align*}
+h_{ID}
+&=\widetilde e_\ell(sQ_{ID},rP)
+=\widetilde e_\ell(Q_{ID},P)^{sr}\\
+&=\widetilde e_\ell(Q_{ID},sP)^r
+=\widetilde e_\ell(Q_{ID},P_{\mathrm{pub}})^r
+=g_{ID}^{\,r}.
+\end{align*}
+Следовательно,
+\[m=M\oplus H_2(g_{ID}^{\,r})\oplus H_2(h_{ID})=M.\]
+\end{document}
