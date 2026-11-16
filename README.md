@@ -10,7 +10,7 @@
 - Лекция 3 — [PDF](out/lecture-03.pdf) · [TeX](Tex/lecture-03.tex)
 - Лекция 4 — [PDF](out/lecture-04.pdf) · [TeX](Tex/lecture-04.tex)
 - Лекция 5 — [PDF](out/lecture-05.pdf) · [TeX](Tex/lecture-05.tex)
-- Лекция 6 — В разработке.
+- Лекция 6 — [PDF](out/lecture-06.pdf) · [TeX](Tex/lecture-06.tex)
 - Лекция 7 - [PDF](out/lecture-07.pdf) · [TeX](Tex/lecture-07.tex)
 - Лекция 8 - [PDF](out/lecture-08.pdf) · [TeX](Tex/lecture-08.tex)
 
