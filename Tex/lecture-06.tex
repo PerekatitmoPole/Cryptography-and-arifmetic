@@ -1,0 +1,578 @@
+\documentclass[12pt,a4paper]{article}
+% Сборка из корня репозитория:
+% pdflatex -interaction=nonstopmode -halt-on-error -output-directory=out Tex/lecture-06.tex
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}\geometry{margin=2.2cm}
+\usepackage{microtype,parskip,enumitem,tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\F}{\mathbb F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\tors}{\mathrm{tors}}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\charop}{char}
+\newcommand{\leg}[2]{\left(\frac{#1}{#2}\right)}
+\setlength{\emergencystretch}{1.5em}
+\allowdisplaybreaks[1]
+\raggedbottom
+
+% Все рисунки построены функциями; растровые фрагменты не используются.
+% Односвязная модель: x=t^2, y=t*sqrt(t^4+1), то есть y^2=x^3+x.
+% Двухкомпонентная модель: y^2=0.3(x+3)(x+1)(x-1).
+% Овал: x=-2-cos(t), y=sqrt(.3)*sin(t)*sqrt(3+cos(t)).
+% Неограниченная компонента: x=1+t^2,
+% y=sqrt(.3)*t*sqrt((t^2+4)(t^2+2)).
+\pgfmathdeclarefunction{onex}{1}{\pgfmathparse{#1*#1}}
+\pgfmathdeclarefunction{oney}{1}{\pgfmathparse{#1*sqrt(#1*#1*#1*#1+1)}}
+\pgfmathdeclarefunction{ovalx}{1}{\pgfmathparse{-2-cos(#1)}}
+\pgfmathdeclarefunction{ovaly}{1}{\pgfmathparse{sqrt(.3)*sin(#1)*sqrt(3+cos(#1))}}
+\pgfmathdeclarefunction{branchx}{1}{\pgfmathparse{1+#1*#1}}
+\pgfmathdeclarefunction{branchy}{1}{\pgfmathparse{sqrt(.3)*#1*sqrt((#1*#1+4)*(#1*#1+2))}}
+\newcommand{\ECoval}[1]{%
+  \draw[#1,domain=0:360,samples=145,smooth,variable=\t]
+    plot ({ovalx(\t)},{ovaly(\t)});}
+\newcommand{\ECbranch}[2]{%
+  \draw[#1,domain=-#2:#2,samples=145,smooth,variable=\t]
+    plot ({branchx(\t)},{branchy(\t)});}
+\tikzset{curve/.style={line width=.85pt},auxline/.style={line width=.65pt},
+  axes/.style={->,line width=.5pt},every picture/.style={>=Latex}}
+
+% Точки на двухкомпонентной модели при y=+-0.5.
+\def\xa{-2.886326}\def\xb{-1.210671}\def\xc{1.096996}
+\def\xr{2.284158}\def\yr{2.585650}\def\slope{.596782}
+
+\newcommand{\ProjectionSketch}{%
+\begin{tikzpicture}[x=1.4cm,y=.8cm,font=\small]
+  \draw[axes] (-1.15,0)--(2.2,0);
+  \draw[curve,domain=-1.38:1.38,samples=145,smooth,variable=\t]
+    plot ({onex(\t)},{oney(\t)});
+  \draw[auxline] (-.55,-1.39)--(1.94,2.98);
+  \draw[auxline] (-.44,.45)--(.99,-1.57);
+  \fill (1.5,2.20794) circle (1.6pt) node[above left] {$P$};
+  \fill (.080128,-.283978) circle (1.6pt) node[right=5mm] {$Q$};
+\end{tikzpicture}}
+
+\newcommand{\RootPictures}{%
+\begin{center}
+\begin{minipage}{.44\textwidth}\centering
+\begin{tikzpicture}[x=1.15cm,y=.72cm,font=\small]
+  \draw[axes] (-1.15,0)--(2.65,0);
+  \draw[axes] (0,-2.7)--(0,2.7);
+  \draw[curve,domain=-1.3:1.3,samples=145,smooth,variable=\t]
+    plot ({.55+onex(\t)},{oney(\t)});
+  \node[anchor=west] at (1.2,-.65) {1 корень};
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}{.54\textwidth}\centering
+\begin{tikzpicture}[x=.94cm,y=.72cm,font=\small]
+  \draw[axes] (-3.5,0)--(2.9,0);
+  \draw[axes] (0,-2.7)--(0,2.7);
+  \ECoval{curve}\ECbranch{curve}{1.15}
+  \node[anchor=west] at (1.55,.4) {3 корня};
+  \node[anchor=west] at (2.1,-1.6) {$E(\R)$};
+\end{tikzpicture}
+\end{minipage}
+\end{center}}
+
+\newcommand{\ChordPicture}{%
+\begin{tikzpicture}[x=1.35cm,y=.9cm,font=\small]
+  \draw[axes] (-3.5,0)--(3.55,0);
+  \draw[axes] (0,-2.2)--(0,2.3);
+  \ECoval{curve}\ECbranch{curve}{1.05}
+  % Горизонтальные масштабы и положение точек повторяют рукопись.
+  % Секущая проходит через две точки овала и правую компоненту.
+  \draw[auxline] (-3.35,{.28*(-3.35)+.54})--(2.8,{.28*2.8+.54});
+  \fill (-2.964011,-.289923) circle (1.7pt) node[below left] {$P$};
+  \fill (-1.050414,.245884) circle (1.7pt) node[above left=7pt] {$Q$};
+  \fill (1.275759,.897213) circle (1.7pt);
+  \node[anchor=west] at (1.8,.55) {$PQ\ (x,y)$};
+  \draw[dashed] (1.275759,.897213)--(1.275759,-.897213);
+  \fill (1.275759,-.897213) circle (1.7pt);
+  \node[anchor=west,align=left] at (1.75,-.8) {$(x,-y)$\\$P+Q$};
+\end{tikzpicture}}
+
+\newcommand{\AssociativityStart}{%
+\begin{tikzpicture}[x=1.35cm,y=.85cm,font=\small]
+  \draw[axes] (-3.45,0)--(3.55,0);
+  \draw[axes] (0,-1.65)--(0,1.65);
+  \ECoval{curve,red}
+  \fill (\xa,-.5) circle (1.7pt) node[below left] {$P_1$};
+  \fill (\xb,.5) circle (1.7pt) node[above right] {$P_2$};
+  \fill (\xa,.5) circle (1.7pt) node[above left] {$P_3$};
+\end{tikzpicture}}
+
+% #1: цвет овала; #2: подпись нижней правой точки (как в рукописи).
+\newcommand{\AssociativityConstruction}[2]{%
+  \draw[axes] (-3.55,0)--(3.65,0);
+  \draw[axes] (0,-3.25)--(0,3.25);
+  \ECoval{curve,#1}\ECbranch{curve}{1.25}
+  \draw[auxline] (-3.45,{-.5+\slope*(-3.45-\xa)})--(2.58,{-.5+\slope*(2.58-\xa)})
+    node[pos=.76,above,sloped] {$L_1$};
+  \draw[auxline] (\xa,.5)--(\xr,-\yr) node[pos=.78,below,sloped] {$L_2$};
+  \draw[auxline] (\xa,.5)--(\xr,.5) node[pos=.5,above] {$\ell_1$};
+  \draw[auxline] (\xa,-.5)--(\xc,-.5) node[pos=.78,above] {$\ell_2$};
+  \draw[dashed] (\xc,-1.25)--(\xc,1.95) node[pos=.94,right] {$L_3$};
+  \draw[dashed] (\xr,-2.92)--(\xr,2.95) node[pos=.56,right] {$\ell_3$};
+  \fill (\xa,-.5) circle (1.7pt) node[below left] {$P_1$};
+  \fill (\xa,.5) circle (1.7pt) node[above left] {$P_3$};
+  \fill (\xb,.5) circle (1.7pt) node[above right=6pt] {$P_2$};
+  \fill (\xb,-.5) circle (1.7pt);
+  \node[anchor=north] at (\xb,-1.15) {$P_1(P_2+P_3)$};
+  \fill (\xc,.5) circle (1.7pt);
+  \node[anchor=west] at (1.35,.75) {$P_2P_3$};
+  \fill (\xc,-.5) circle (1.7pt);
+  \fill (\xr,\yr) circle (1.7pt) node[right] {$P_1P_2$};
+  \fill (\xr,-\yr) circle (1.7pt) node[right] {$#2$};
+}
+
+\begin{document}
+\section*{\centering Лекция 6}
+
+% Рукопись, с. 1. Все утверждения и исторические пометы сохранены.
+\section{Род кривой и рациональные точки}
+
+\textbf{Memento.} Пусть $C$ --- неприводимая кривая, $\deg C=n$. Тогда
+\[
+g(C)=\frac{(n-1)(n-2)}2-m,
+\qquad m\text{ --- число двойных точек}.
+\]
+
+\textbf{Теорема.} Пусть $E=\{y^2=x^3+Ax+B\}$ над $k\subset\CC$. Тогда
+\begin{align*}
+E\text{ гладкая}
+&\Longleftrightarrow g(E)=1
+\Longleftrightarrow \Delta=-4A^3-27B^2\ne0\\
+&\Longleftrightarrow \text{все корни }x^3+Ax+B\text{ простые},
+\end{align*}
+где $\Delta$ --- дискриминант $f(x)=x^3+Ax+B$.
+
+\textbf{Факт (Гильберт, Гурвиц).} Если $g(C)=0$, $\deg C=n>3$, то
+$C$ бирациональна кривой степени $n-2$.
+
+\textbf{Мораль.} Такие кривые бирациональны прямой или конике.
+
+\textbf{Факт (Пуанкаре).} Любая кривая $C$ с рациональной точкой и
+$g(C)=1$ бирациональна кубике.
+
+\textbf{Теорема (гипотеза Морделла, теорема Фалтингса).}
+Если $g(C)>1$, то
+\[
+|C(\Q)|<\infty,
+\qquad C(\Q)\text{ --- рациональные точки}.
+\]
+
+\subsection*{Вопрос с кривыми рода 1}
+Пусть $E$ --- кривая рода $1$ (кубика). По теореме Морделла
+\[
+E(\Q)\simeq\Z^r\oplus
+\underbrace{\Z/p_1^{s_1}\Z\oplus\dots\oplus\Z/p_m^{s_m}\Z}
+_{E(\Q)_{\tors}\text{ --- кручение}}.
+\]
+
+\textbf{Гипотеза.} Ограничено ли $r$? (Noam Elkies, 2024, $r=29$.)
+
+\textbf{Теорема (Mazur, 1976).}
+\[
+|E(\Q)_{\tors}|\in\{1,\dots,10,12,16\}.
+\]
+Все значения достигаются.
+
+$\Q$ можно заменить на любое числовое поле $k$.
+
+\textbf{Теорема.} Любая гладкая кубика с рациональной точкой бирациональна
+кубике
+\[
+y^2=f(x),\qquad \deg f=3,\qquad\Delta(f)\ne0.
+\]
+
+\newpage
+% Рукопись, с. 2.
+\section{Приведение кубики к виду $y^2=f(x)$}
+
+\begin{minipage}[t]{.58\textwidth}
+\vspace{0pt}
+Пусть $g(x,y)$ --- уравнение исходной кривой,
+\[
+P\in C=\{g(x,y)=0\}
+\]
+--- рациональная точка. Можем сделать $Q$ началом координат.
+\end{minipage}\hfill
+\begin{minipage}[t]{.4\textwidth}\vspace{-4mm}\centering
+\ProjectionSketch
+\end{minipage}
+
+\[
+g(x,y)=\varphi_3(x,y)+2\varphi_2(x,y)+\varphi_1(x,y),
+\]
+где $\varphi_i(x,y)$ --- многочлен однородной степени $i$.
+
+Подставим $L=\{y=tx\}$ в уравнение:
+\[
+\psi_3x^2+2\psi_2x+\psi_1=0,
+\qquad \psi_i(t)=\varphi_i(1,t),
+\qquad \varphi_i(x,tx)=x^i\varphi_i(1,t).
+\]
+\[
+x=\frac{-\psi_2\pm\sqrt{\psi_2^2-\psi_3\psi_1}}{\psi_3}.
+\]
+Следовательно,
+\[
+(x\psi_3+\psi_2)^2=\psi_2^2-\psi_3\psi_1,
+\qquad \deg(\psi_2^2-\psi_3\psi_1)\le4.
+\]
+
+\textbf{1) Если $\deg(\psi_2^2-\psi_3\psi_1)<4$.} Обозначим
+\[
+f=\psi_2^2-\psi_3\psi_1,\qquad
+X=t=\frac yx,\qquad Y=\psi_3x+\psi_2.
+\]
+Тогда $Y^2=f(X)$. При этом $\deg f=3$, так как $g=1$, а род ---
+бирациональный инвариант.
+
+\textbf{2) Если степень равна $4$.} Существует $y=t_0x$, для которой
+\[
+\Delta(t)=(t-t_0)h(t),\qquad \deg h=3,
+\qquad \Delta(t)=\psi_2^2(t)-\psi_3(t)\psi_1(t).
+\]
+Положим $t=t_0+\dfrac1X$. Тогда
+\[
+\Delta\!\left(t_0+\frac1X\right)
+=\frac1Xh\!\left(t_0+\frac1X\right)
+=\frac{X^3h\!\left(t_0+\frac1X\right)}{X^4}.
+\]
+\[
+Y=X^2(\psi_3x+\psi_2),\qquad \Delta(f)\ne0,
+\quad\text{так как }g=1.
+\]
+
+\textbf{Следствие.} Любую гладкую кубику с рациональной точкой можно
+привести к виду
+\[
+y^2=x^3+Ax+B,\qquad 4A^3-27B^2\ne0.
+\]
+
+\textbf{Доказательство.} По замене получаем $y^2=ax^3+bx^2+cx+d$.
+В рукописи записаны замены
+\[
+x\longmapsto a^2x\ \Longrightarrow\ a=1;\qquad
+x\longmapsto x-\frac b3\quad\text{--- убрать квадратный член}.
+\]
+
+\newpage
+% Рукопись, с. 3.
+\section{Эллиптические кривые}
+
+\textbf{Определение.} Эллиптическая кривая над $k$ --- проективная кривая
+\[
+Y^2Z=X^3+AXZ^2+BZ^3,\qquad
+\Delta=-4A^3-27B^2\ne0,
+\]
+где $\charop(k)\ne2,3$.
+
+\textbf{Замечание.} $g(E)=1$ и $E$ гладкая.
+\[
+E=\{y^2=x^3+Ax+B\}\cup\{O\},\qquad O=(0:1:0).
+\]
+
+\RootPictures
+
+\section{Групповой закон}
+Пусть $P,Q\in E(k)$. Обозначим через $PQ$ третью точку пересечения
+прямой $L_{P,Q}$ с $E$:
+\[
+PQ=L_{P,Q}\cap E(k)\quad\text{(третья точка пересечения $L$ и $E$)}.
+\]
+
+\begin{center}\ChordPicture\end{center}
+
+$(E(k),+)$ --- абелева группа. Абелевость очевидна.
+
+Единица $O$ --- бесконечно удалённая точка:
+\[
+P+O=P\qquad\forall P\in E(k).
+\]
+Если $P=(x,y)$, то $-P=(x,-y)$.
+
+\subsection*{Ассоциативность}
+Достаточно доказать
+\[
+P_1(P_2+P_3)=(P_1+P_2)P_3.
+\]
+\begin{center}\AssociativityStart\end{center}
+
+\newpage
+% Рукопись, с. 4: основной рисунок.
+\textbf{Ассоциативность.} Достаточно
+\[
+P_1(P_2+P_3)=(P_1+P_2)P_3.
+\]
+
+\begin{center}
+\begin{tikzpicture}[x=1.48cm,y=.89cm,font=\small]
+  \AssociativityConstruction{black}{P_1+P_3}
+\end{tikzpicture}
+\end{center}
+\vspace{-2mm}
+\[
+C=\ell_1\ell_2\ell_3\quad\text{--- кубика},\qquad
+\widetilde C=L_1L_2L_3.
+\]
+Они пересекаются в восьми точках с $E$. Следовательно, девятая точка
+тоже лежит в пересечении, что и доказывает ассоциативность.
+
+\subsection*{Вычислим координаты}
+Пусть $P_1=(x_1,y_1)$, $P_2=(x_2,y_2)$. Найдём $P_1+P_2$.
+
+\textbf{Случай 1: $P_1\ne P_2$.} Прямая через $P_1,P_2$:
+\[
+y=mx+b,\qquad m=\frac{y_2-y_1}{x_2-x_1}.
+\]
+
+\textbf{Случай 2: $P_1=P_2=P$.} Если $y=0$, то $2P=O$, то есть
+$\ord(P)=2$. Если $y\ne0$, то
+\[
+y^2=x^3+Ax+B,\qquad 2yy'=3x^2+A,\qquad
+y'=\frac{3x^2+A}{2y}.
+\]
+
+\textbf{Итог (подставить всё).}
+\[
+x_{P_1+P_2}=\left(\frac{y_2-y_1}{x_2-x_1}\right)^2-x_1-x_2,
+\qquad P_1\ne P_2;
+\]
+\[
+x_{2P}=\left(\frac{3x_1^2+A}{2y_1}\right)^2-2x_1.
+\]
+
+\newpage
+\subsection*{Точки кручения}
+\textbf{Замечание.} Пусть $P\in E(k)$. Тогда
+\[
+\ord(P)=2\Longleftrightarrow P=-P.
+\]
+То есть $(x,y)=(x,-y)$, откуда $y=0$, так как $\charop(k)\ne2$.
+
+Пусть $k\subset\CC$ и
+\[
+y^2=x^3+Ax+B=(x-a_1)(x-a_2)(x-a_3).
+\]
+Тогда $\ord((a_i,0))=2$. Подгруппа точек порядка $2$:
+\[
+E[2]=
+\begin{cases}
+\Z/2\Z\times\Z/2\Z,&\text{если все }a_i\in k,\\
+\Z/2\Z,&\text{если ровно один }a_i\in k,\\
+0,&\text{иначе}.
+\end{cases}
+\]
+
+% Рукопись, начало с. 5.
+При $k\subseteq\CC$ записано
+\[
+E[N]=\Z/N\Z\times\Z/N\Z.
+\]
+
+$N$-кручение, точка порядка $N$.
+
+\section{Кривые над конечным полем}
+Рассмотрим случай кривых над $\F_p\simeq\Z/p\Z$.
+Как найти $|E(\F_p)|$? В идеале --- найти $E(\F_p)$.
+
+Для $E:\ y^2=x^3+Ax+B$:
+\[
+|E(\F_p)|=p+1+a_p,\qquad
+a_p=\sum_{\alpha\in\F_p}\leg{\alpha^3+A\alpha+B}{p},
+\]
+где $\leg{\cdot}{p}$ --- символ Лежандра.
+
+\begin{itemize}[leftmargin=1.6em]
+\item Если $\leg{\alpha^3+A\alpha+B}{p}=1$, то $\alpha^3+A\alpha+B$
+--- квадрат в $\F_p$; добавляются две точки в $E(\F_p)$.
+\item Если $\leg{\alpha^3+A\alpha+B}{p}=-1$, то ничего не добавляется.
+\item Если $\leg{\alpha^3+A\alpha+B}{p}=0$, то добавляется одна точка
+$(\alpha,0)$.
+\end{itemize}
+
+То есть число точек равно
+\begin{align*}
+|E(\F_p)|
+&=1+\sum_{\alpha\in\F_p}\left(\leg{\alpha^3+A\alpha+B}{p}+1\right)\\
+&=(p+1)+\sum_{\alpha\in\F_p}\leg{\alpha^3+A\alpha+B}{p}.
+\end{align*}
+
+\textbf{Теорема (Хассе, 1933).}\quad $|a_p|\le2\sqrt p$.
+
+\textbf{Замечание.} Следствие гипотез Вейля (Делинь, 1974).
+
+\newpage
+\subsection*{Формулы сложения}
+Пусть $P_1=(x_1,y_1)$, $P_2=(x_2,y_2)$. Формулы для обеих координат:
+\begin{align*}
+x_{P_1+P_2}
+&=\left(\frac{y_2-y_1}{x_2-x_1}\right)^2-x_1-x_2,\\
+y_{P_1+P_2}
+&=-\frac{y_2-y_1}{x_2-x_1}(x_{P_1+P_2}-x_1)-y_1;
+\end{align*}
+\begin{align*}
+x_{2P}&=\left(\frac{3x_1^2+A}{2y_2}\right)^2-2x_1,\\
+y_{2P}&=-\frac{3x_1^2+A}{2y_2}(x_{2P}-x_1)-y_1.
+\end{align*}
+
+\section{Пример над $\F_7$}
+Рассмотрим
+\[
+E=\{y^2=x^3-2x-3\}.\qquad E(\F_7)\text{ --- ?}
+\]
+\[
+\Delta=-4A^3-27B^2=4\cdot8-27\cdot9\ne0,
+\]
+поэтому это эллиптическая кривая.
+
+% Рукопись, с. 6. Все промежуточные вычисления выполняются в F_7.
+Возьмём $P=(3,2)$. Все дальнейшие вычисления --- в $\F_7$.
+
+\textbf{$2P=(2,6)$.}
+\[
+x=\left(\frac{3\cdot9-2}{4}\right)^2-6
+=\left(\frac{25}{4}\right)^2-6=2,
+\]
+\[
+y=-(50)(2-3)-2=6.
+\]
+
+\textbf{$3P=(4,2)$.}
+\[
+(2,6)+(3,2)=(16-5=11=4,\;4\cdot2-6)=(4,2).
+\]
+
+\begin{align*}
+4P&:\quad (4,2)+(3,2)=(0-7=0,\;5),\\
+5P&:\quad (0,5)+(3,2)=(5,0),\\
+6P&:\quad (5,0)+(3,2)=(0,2),\\
+7P&:\quad (0,2)+(3,2)=(4,5).
+\end{align*}
+
+\textbf{$8P=2\cdot4P$.}
+\[
+\left(\frac{-2}{2\cdot5}\right)^2-0
+=\left(\frac{-2}{3}\right)^2-0
+\quad\Longrightarrow\quad 8P=(2,1).
+\]
+\[
+9P:\quad (2,1)+(3,2)=(3,5),
+\qquad 9P+P=O\quad\text{--- нуль группы}.
+\]
+
+\newpage
+\textbf{Итог.}
+\[
+\ord(P)=10,\qquad \Z/10\Z\le E(\F_7).
+\]
+В рукописи записана оценка
+\[
+\bigl||E(\F_7)|-8\bigr|\le4.
+\]
+
+Если $\Z/10\Z\not\simeq\F_7$,
+то
+\[
+\frac{|E(\F_7)|}{|\Z/10\Z|}\ge2,
+\qquad\text{то есть }|E(\F_7)|\ge20,
+\]
+--- противоречие.
+
+\section{Пример над $\F_{71}$}
+\[
+E=\{y^2=x^3-x\}.\qquad E(\F_{71})\text{ --- ?}
+\]
+Функция $f(x)=x^3-x$ нечётная:
+\[
+f(-\alpha)=-f(\alpha),\qquad f(x)=x(x-1)(x+1).
+\]
+
+$-1$ --- квадрат или нет в $\F_{71}$?
+\[
+(-1)^{(71-1)/2}=(-1)^{35}=-1,
+\]
+поэтому $-1$ --- квадратичный невычет. Тогда
+\[
+\leg{-\alpha}{71}
+=\leg{-1}{71}\leg{\alpha}{71}
+=-\leg{\alpha}{71}.
+\]
+
+При $p=71$:
+\begin{align*}
+\sum_{\alpha=1}^{35}\leg{\alpha^3-\alpha}{p}
++\sum_{\alpha=36}^{70}\leg{\alpha^3-\alpha}{p}
+&=\sum_{\alpha=1}^{35}\leg{f(\alpha)}{p}
++\sum_{\alpha=1}^{35}\leg{f(-\alpha)}{p}\\
+&=0.
+\end{align*}
+Следовательно,
+\[
+|E(\F_p)|=72.
+\]
+
+Пусть $P\in E(\F_{71})$. Тогда
+\[
+P=\underbrace{9P}_{\in E[8]}-\underbrace{8P}_{\in E[9]},
+\qquad E(\F_{71})\simeq E[8]\times E[9].
+\]
+
+% Рукопись, с. 7.
+\newpage
+Каким может быть $E[8]$:
+\[
+\Z/8\Z,\qquad \Z/2\Z\times\Z/4\Z,\qquad
+\Z/2\Z\times\Z/2\Z\times\Z/2\Z.
+\]
+Для $E[9]$:
+\[
+\Z/9\Z,\qquad \Z/3\Z\times\Z/3\Z.
+\]
+
+\subsection*{Подгруппа $E[8]$}
+Пусть $P\in E[2]$, $P=(x_1,y_1)$. Тогда
+\[
+P=-P,\qquad (x_1,y_1)=(x_1,-y_1)\quad\Longrightarrow\quad y_1=0.
+\]
+\[
+x^3-x=x(x-1)(x+1)\quad\text{--- три корня}.
+\]
+Элементы порядка $2$ в $\Z/2\Z\times\Z/4\Z$:
+\[
+(0,2),\quad(1,0),\quad(1,2)
+\quad\Longrightarrow\quad E[8]\simeq\Z/2\Z\times\Z/4\Z.
+\]
+
+\subsection*{Подгруппа $E[9]$}
+Пусть $P\in E[3]$. Тогда
+\[
+3P=O\quad\Longrightarrow\quad P=-2P
+\quad\Longrightarrow\quad x_{2P}=x_P\pmod{71}.
+\]
+В рукописи получено
+\[
+3x^4-6x^2+1=0\pmod{71}.
+\]
+
+Корней не более четырёх; все они образуют пары $(r,-r)$.
+То есть существует не более двух координат по $x$ для $3$-кручения,
+а значит, не более четырёх точек в $E[3]$ (на аффинной части).
+Следовательно,
+\[
+E[9]\simeq\Z/9\Z.
+\]
+То есть
+\[
+E(\F_{71})\simeq\Z/2\Z\times\Z/4\Z\times\Z/9\Z
+\simeq\Z/2\Z\times\Z/36\Z.
+\]
+\end{document}
